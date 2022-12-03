@@ -80,9 +80,7 @@ namespace WordHelper
                             break;
                         }
                         else
-                        {
                             output[i] = output[i].Remove(output[i].Length - wordLength);
-                        }
                     }
                 }
             }
@@ -95,42 +93,100 @@ namespace WordHelper
     /* Remove Duplicate Words in List */
             output = output.Distinct().ToList();
 
-
-
-
-
-
-
-
-
-
-
-
             // TODO #7 - for this next part you will ensure that if the user wants to restricts
-            // words to those with certain letters in certain locations, they can do it
-            // check for the 3 letter options
-            // here is some code to help you get started
-            // test #1
 
 
+            /* Temp Vars */
+            bool delete = false;
+            int position = 0;
 
 
-            /*
-            if (txtLetter.Text != string.Empty && udLetterAtPos.Value > 0)
+    /* Checks letters at specific positions */
+
+            if (txtLetter.Text != string.Empty && numPos1.Value > 0)
             {
-                // remove all list items whose letter at position specified is not the letter specified
-                for (int i = biggestList.Count - 1; i >= 0; i--)
+                string str = txtLetter.Text.ToUpper();
+                char letter = char.Parse(str);
+
+                for (int i = output.Count - 1; i >= 0; i--)
                 {
+                    delete = true;
+                    position = 0;
+                    // remove all list items whose letter at position specified is not the letter specified
+                    foreach (char c in output[i])
+                    {
+                        position++;
+                        if (position == numPos1.Value)
+                        {
+                            if (c == letter)
+                                delete = false;
+                        }
+
+                    }
+
+                    if (delete == true)
+                        output.RemoveAt(i);
+
                 }
-
             }
-            // test #2
-            // test #3
-            */
 
+            position = 0;
 
+            if (txtLetter2.Text != string.Empty && numPos2.Value > 0)
+            {
+                string str = txtLetter2.Text.ToUpper();
+                var charArray = str.ToCharArray();
 
+                for (int i = output.Count - 1; i >= 0; i--)
+                {
+                    delete = true;
+                    position = 0;
+                    // remove all list items whose letter at position specified is not the letter specified
+                    foreach (char c in output[i])
+                    {
+                        position++;
+                        if (position == numPos2.Value)
+                        {
+                            if (c == charArray[0])
+                                delete = false;
+                        }
 
+                    }
+
+                    if (delete == true)
+                        output.RemoveAt(i);
+
+                }
+            }
+
+            position = 0;
+
+            if (txtLetter3.Text != string.Empty && numPos3.Value > 0)
+            {
+                string str = txtLetter3.Text.ToUpper();
+                var charArray = str.ToCharArray();
+
+                for (int i = output.Count - 1; i >= 0; i--)
+                {
+                    delete = true;
+                    position = 0;
+                    // remove all list items whose letter at position specified is not the letter specified
+                    foreach (char c in output[i])
+                    {
+                        position++;
+                        if (position == numPos3.Value)
+                        {
+                            if (c == charArray[0])
+                                delete = false;
+                        }
+
+                    }
+
+                    if (delete == true)
+                        output.RemoveAt(i);
+
+                }
+            }
 
 
     /* Compare Combinations to Dictionary */
