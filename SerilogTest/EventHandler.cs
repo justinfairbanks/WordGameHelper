@@ -12,7 +12,7 @@ Log.Logger = new LoggerConfiguration() //New Logger config
     .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day) //Gives file to write errors too
     .CreateLogger();
 
-Log.Information("Serilog has been initialized"); //Info tag message
+Log.Information("I have properly initialized my logger."); //Info tag message
 
 try
 {

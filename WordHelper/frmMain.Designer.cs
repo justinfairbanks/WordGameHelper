@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.txtInput = new System.Windows.Forms.TextBox();
             this.txtLetter = new System.Windows.Forms.TextBox();
             this.txtLetter2 = new System.Windows.Forms.TextBox();
@@ -51,12 +52,21 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.grdWordle = new System.Windows.Forms.DataGridView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnAddWord = new System.Windows.Forms.Button();
+            this.txtAddWord = new System.Windows.Forms.TextBox();
+            this.btnGood = new System.Windows.Forms.Button();
+            this.btnBad = new System.Windows.Forms.Button();
+            this.lstBad = new System.Windows.Forms.ListBox();
+            this.lstGood = new System.Windows.Forms.ListBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lblStrip = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.spelling1 = new NetSpell.SpellChecker.Spelling(this.components);
+            this.spelling2 = new NetSpell.SpellChecker.Spelling(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).BeginInit();
@@ -65,8 +75,9 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdWordle)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.lblStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtInput
@@ -279,10 +290,90 @@
             // grdWordle
             // 
             this.grdWordle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdWordle.Location = new System.Drawing.Point(-3, 59);
+            this.grdWordle.Location = new System.Drawing.Point(118, 95);
             this.grdWordle.Name = "grdWordle";
-            this.grdWordle.Size = new System.Drawing.Size(510, 91);
+            this.grdWordle.Size = new System.Drawing.Size(253, 47);
             this.grdWordle.TabIndex = 0;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.btnDelete);
+            this.tabPage3.Controls.Add(this.btnAddWord);
+            this.tabPage3.Controls.Add(this.txtAddWord);
+            this.tabPage3.Controls.Add(this.btnGood);
+            this.tabPage3.Controls.Add(this.btnBad);
+            this.tabPage3.Controls.Add(this.lstBad);
+            this.tabPage3.Controls.Add(this.lstGood);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(510, 407);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Database";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(307, 303);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(159, 23);
+            this.btnDelete.TabIndex = 9;
+            this.btnDelete.Text = "Delete Selected Word";
+            this.btnDelete.UseVisualStyleBackColor = true;
+           // this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnAddWord
+            // 
+            this.btnAddWord.Location = new System.Drawing.Point(37, 369);
+            this.btnAddWord.Name = "btnAddWord";
+            this.btnAddWord.Size = new System.Drawing.Size(75, 23);
+            this.btnAddWord.TabIndex = 8;
+            this.btnAddWord.Text = "Add Word";
+            this.btnAddWord.UseVisualStyleBackColor = true;
+            //this.btnAddWord.Click += new System.EventHandler(this.btnAddWord_Click);
+            // 
+            // txtAddWord
+            // 
+            this.txtAddWord.Location = new System.Drawing.Point(37, 338);
+            this.txtAddWord.Name = "txtAddWord";
+            this.txtAddWord.Size = new System.Drawing.Size(100, 20);
+            this.txtAddWord.TabIndex = 7;
+            // 
+            // btnGood
+            // 
+            this.btnGood.Location = new System.Drawing.Point(213, 180);
+            this.btnGood.Name = "btnGood";
+            this.btnGood.Size = new System.Drawing.Size(75, 23);
+            this.btnGood.TabIndex = 6;
+            this.btnGood.Text = "<<<";
+            this.btnGood.UseVisualStyleBackColor = true;
+          //  this.btnGood.Click += new System.EventHandler(this.btnGood_Click);
+            // 
+            // btnBad
+            // 
+            this.btnBad.Location = new System.Drawing.Point(213, 127);
+            this.btnBad.Name = "btnBad";
+            this.btnBad.Size = new System.Drawing.Size(75, 23);
+            this.btnBad.TabIndex = 5;
+            this.btnBad.Text = ">>>";
+            this.btnBad.UseVisualStyleBackColor = true;
+           // this.btnBad.Click += new System.EventHandler(this.btnBad_Click);
+            // 
+            // lstBad
+            // 
+            this.lstBad.FormattingEnabled = true;
+            this.lstBad.Location = new System.Drawing.Point(307, 59);
+            this.lstBad.Name = "lstBad";
+            this.lstBad.Size = new System.Drawing.Size(159, 238);
+            this.lstBad.TabIndex = 4;
+            // 
+            // lstGood
+            // 
+            this.lstGood.FormattingEnabled = true;
+            this.lstGood.Location = new System.Drawing.Point(34, 59);
+            this.lstGood.Name = "lstGood";
+            this.lstGood.Size = new System.Drawing.Size(159, 238);
+            this.lstGood.TabIndex = 3;
             // 
             // menuStrip1
             // 
@@ -309,38 +400,36 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // statusStrip1
+            // lblStrip
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 537);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(751, 22);
-            this.statusStrip1.TabIndex = 23;
-            this.statusStrip1.Text = "statusStrip1";
+            this.lblStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus});
+            this.lblStrip.Location = new System.Drawing.Point(0, 537);
+            this.lblStrip.Name = "lblStrip";
+            this.lblStrip.Size = new System.Drawing.Size(751, 22);
+            this.lblStrip.TabIndex = 23;
+            this.lblStrip.Text = "statusStrip1";
             // 
-            // toolStripStatusLabel1
+            // lblStatus
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(110, 17);
-            this.toolStripStatusLabel1.Text = " No Words Selected";
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(110, 17);
+            this.lblStatus.Text = " No Words Selected";
             // 
-            // tabPage3
+            // spelling1
             // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(510, 407);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.spelling1.Dictionary = null;
+            // 
+            // spelling2
+            // 
+            this.spelling2.Dictionary = null;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(751, 559);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.lblStrip);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.txtResult);
             this.Controls.Add(this.btnCalculate);
@@ -349,6 +438,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "frmMain";
             this.Text = " ";
+            this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).EndInit();
@@ -358,10 +448,12 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grdWordle)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.lblStrip.ResumeLayout(false);
+            this.lblStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,10 +486,19 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.StatusStrip lblStrip;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.DataGridView grdWordle;
         private System.Windows.Forms.TabPage tabPage3;
+        private NetSpell.SpellChecker.Spelling spelling1;
+        private NetSpell.SpellChecker.Spelling spelling2;
+        private System.Windows.Forms.Button btnAddWord;
+        private System.Windows.Forms.TextBox txtAddWord;
+        private System.Windows.Forms.Button btnGood;
+        private System.Windows.Forms.Button btnBad;
+        private System.Windows.Forms.ListBox lstBad;
+        private System.Windows.Forms.ListBox lstGood;
+        private System.Windows.Forms.Button btnDelete;
     }
 }
 
