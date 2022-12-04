@@ -9,19 +9,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Numerics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Data.Common;
+using System.Reflection;
 
 namespace WordHelper
 {
     public partial class frmMain : Form
     {
 
-    /* DONE */  // TODO #1, add the following controls at a minimum:
-                    // 4 textboxes with lables
-                    // 4 numeric updown controls with labels
-                    // 2 status lables
-                    // one checkbox
-                    // one button
-                    // either 1) multiline textbox or 2) another list
+    // TODO #1, add controls
 
         static List<string> biggestList = new List<string>();
 
@@ -96,102 +94,142 @@ namespace WordHelper
             // TODO #7 - for this next part you will ensure that if the user wants to restricts
 
 
-            /* Temp Vars */
-            bool delete = false;
-            int position = 0;
+        /* Basic Word Tab */
 
-
-    /* Checks letters at specific positions */
-
-            if (txtLetter.Text != string.Empty && numPos1.Value > 0)
+            if (tabControl1.SelectedTab == tabPage1) //If in the first tab (basic word entry)
             {
-                string str = txtLetter.Text.ToUpper();
-                char letter = char.Parse(str);
 
-                for (int i = output.Count - 1; i >= 0; i--)
+                /* Temp Vars */
+                bool delete = false;
+                int position = 0;
+
+
+                /* Checks letters at specific positions */
+
+                if (txtLetter.Text != string.Empty && numPos1.Value > 0)
                 {
-                    delete = true;
-                    position = 0;
-                    // remove all list items whose letter at position specified is not the letter specified
-                    foreach (char c in output[i])
+                    string str = txtLetter.Text.ToUpper();
+                    char letter = char.Parse(str);
+
+                    for (int i = output.Count - 1; i >= 0; i--)
                     {
-                        position++;
-                        if (position == numPos1.Value)
+                        delete = true;
+                        position = 0;
+                        // remove all list items whose letter at position specified is not the letter specified
+                        foreach (char c in output[i])
                         {
-                            if (c == letter)
-                                delete = false;
+                            position++;
+                            if (position == numPos1.Value)
+                            {
+                                if (c == letter)
+                                    delete = false;
+                            }
+
                         }
 
+                        if (delete == true)
+                            output.RemoveAt(i);
+
                     }
+                }
 
-                    if (delete == true)
-                        output.RemoveAt(i);
+                position = 0;
 
+                if (txtLetter2.Text != string.Empty && numPos2.Value > 0)
+                {
+                    string str = txtLetter2.Text.ToUpper();
+                    var charArray = str.ToCharArray();
+
+                    for (int i = output.Count - 1; i >= 0; i--)
+                    {
+                        delete = true;
+                        position = 0;
+                        // remove all list items whose letter at position specified is not the letter specified
+                        foreach (char c in output[i])
+                        {
+                            position++;
+                            if (position == numPos2.Value)
+                            {
+                                if (c == charArray[0])
+                                    delete = false;
+                            }
+
+                        }
+
+                        if (delete == true)
+                            output.RemoveAt(i);
+
+                    }
+                }
+
+                position = 0;
+
+                if (txtLetter3.Text != string.Empty && numPos3.Value > 0)
+                {
+                    string str = txtLetter3.Text.ToUpper();
+                    var charArray = str.ToCharArray();
+
+                    for (int i = output.Count - 1; i >= 0; i--)
+                    {
+                        delete = true;
+                        position = 0;
+                        // remove all list items whose letter at position specified is not the letter specified
+                        foreach (char c in output[i])
+                        {
+                            position++;
+                            if (position == numPos3.Value)
+                            {
+                                if (c == charArray[0])
+                                    delete = false;
+                            }
+
+                        }
+
+                        if (delete == true)
+                            output.RemoveAt(i);
+
+                    }
                 }
             }
 
-            position = 0;
+        /* Wordle Tab */ 
 
-            if (txtLetter2.Text != string.Empty && numPos2.Value > 0)
+            if (tabControl1.SelectedTab == tabPage2) //If in the second tab (wordle tab)
             {
-                string str = txtLetter2.Text.ToUpper();
-                var charArray = str.ToCharArray();
-
-                for (int i = output.Count - 1; i >= 0; i--)
+                for (int i = 0; i < 4; i++)
                 {
-                    delete = true;
-                    position = 0;
-                    // remove all list items whose letter at position specified is not the letter specified
-                    foreach (char c in output[i])
+                    if (grdWordle.CurrentRow.Cells[i].Style.BackColor == Color.Green) //If letter is in confirmed spot
                     {
-                        position++;
-                        if (position == numPos2.Value)
-                        {
-                            if (c == charArray[0])
-                                delete = false;
-                        }
-
+                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.White;
+                        string confirmed = grdWordle.CurrentRow.Cells[i].Value.ToString(); //Needs to be white to read in value?
+                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.Green;
                     }
 
-                    if (delete == true)
-                        output.RemoveAt(i);
-
-                }
-            }
-
-            position = 0;
-
-            if (txtLetter3.Text != string.Empty && numPos3.Value > 0)
-            {
-                string str = txtLetter3.Text.ToUpper();
-                var charArray = str.ToCharArray();
-
-                for (int i = output.Count - 1; i >= 0; i--)
-                {
-                    delete = true;
-                    position = 0;
-                    // remove all list items whose letter at position specified is not the letter specified
-                    foreach (char c in output[i])
+                    if (grdWordle.CurrentRow.Cells[i].Style.BackColor == Color.Yellow) //If letter is somewhere in word
                     {
-                        position++;
-                        if (position == numPos3.Value)
-                        {
-                            if (c == charArray[0])
-                                delete = false;
-                        }
-
+                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.White;
+                        string somewhere = grdWordle.CurrentRow.Cells[i].Value.ToString();
+                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.Yellow;
                     }
 
-                    if (delete == true)
-                        output.RemoveAt(i);
-
+                    if (grdWordle.CurrentRow.Cells[i].Style.BackColor == Color.White) //If letter is not in word
+                    {
+                        string delete = grdWordle.CurrentRow.Cells[i].Value.ToString();
+                    }
                 }
             }
 
 
-    /* Compare Combinations to Dictionary */
 
-            this.lblStatus.Text = "Spell checking...";
+
+
+
+
+
+
+            /* Compare Combinations to Dictionary */
+
+                this.lblStatus.Text = "Spell checking...";
             this.Refresh();
 
             NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
@@ -222,6 +260,8 @@ namespace WordHelper
                         output.Remove(wordToCheck);
 
                     //IF WORD DOES NOT EXIST IN DATA BASE EITHER!!
+
+
                 }
             }
 
@@ -240,6 +280,7 @@ namespace WordHelper
            
         }
 
+
         public void Sort<T>(IList<T> list)
         {
             List<T> tmp = new List<T>(list); //Temp List
@@ -251,6 +292,7 @@ namespace WordHelper
                 list[i] = tmp[i]; //Assign items to correct pos
             }
         }
+
         private static List<string> GetCharacterPermutations(List<string> masterList, char[] list, int start, int end)
         {
 
@@ -407,9 +449,11 @@ namespace WordHelper
 
                 /* Change the color of the above cells */
                 if (current.BackColor != Color.Green && current.BackColor != Color.Yellow)
-                    style.BackColor = Color.Green;
-                else if (current.BackColor == Color.Green)
+                     style.BackColor = Color.Green;
+
+                else if (current.BackColor == Color.Green)          
                     style.BackColor = Color.Yellow;
+
                 else if (current.BackColor == Color.Yellow)
                     style.BackColor = Color.White;
 
@@ -422,6 +466,7 @@ namespace WordHelper
         {
             public static readonly string cnString = "Data Source=CS-GP-S; Initial Catalog = OurDictionary; Integrated Security = False; User Id = wordee; Password=Let me in, please.; MultipleActiveResultSets=True";
         }
+
 
         //        /* IN DATABASE TAB */
 

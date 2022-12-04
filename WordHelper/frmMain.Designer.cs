@@ -320,7 +320,6 @@
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Delete Selected Word";
             this.btnDelete.UseVisualStyleBackColor = true;
-           // this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnAddWord
             // 
@@ -330,7 +329,6 @@
             this.btnAddWord.TabIndex = 8;
             this.btnAddWord.Text = "Add Word";
             this.btnAddWord.UseVisualStyleBackColor = true;
-            //this.btnAddWord.Click += new System.EventHandler(this.btnAddWord_Click);
             // 
             // txtAddWord
             // 
@@ -347,7 +345,6 @@
             this.btnGood.TabIndex = 6;
             this.btnGood.Text = "<<<";
             this.btnGood.UseVisualStyleBackColor = true;
-          //  this.btnGood.Click += new System.EventHandler(this.btnGood_Click);
             // 
             // btnBad
             // 
@@ -357,7 +354,6 @@
             this.btnBad.TabIndex = 5;
             this.btnBad.Text = ">>>";
             this.btnBad.UseVisualStyleBackColor = true;
-           // this.btnBad.Click += new System.EventHandler(this.btnBad_Click);
             // 
             // lstBad
             // 
