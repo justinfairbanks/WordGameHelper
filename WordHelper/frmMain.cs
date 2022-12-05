@@ -37,25 +37,29 @@ namespace WordHelper
             biggestList.Clear();
 
         // TODO #3 - just for clarity sake, make sure all user inputs are uppercase
-            string tempInput = txtInput.Text.ToUpper(); //Reads text box (in all caps) to tempInput string
+               string tempInput = txtInput.Text.ToUpper(); //Reads text box (in all caps) to tempInput string
 
 
         // TODO #4 - you need to convert the input from a string to a character array
-            char[] arr = tempInput.ToCharArray(); //copies character by character into array
+                char[] arr = tempInput.ToCharArray(); //copies character by character into array
 
-    
-    /* All of the words Permuations */
 
-            output = GetArrayPerutations(arr); //All the variations of the given word now stored in output
+        /* All of the words Permuations (For Basic Tab) */
+
+            if (WordTabs.SelectedTab == BasicTab) //If in basic tab
+                output = GetArrayPerutations(arr); //All the variations of the given word now stored in output
 
 
 
             // TODO #5 - now add some tests, first remove any items not equal to the requested word length
 
 
-    /* Remove Words Outside Specified Word Length (Tab 1 Only) */
+            this.lblStatus.Text = "Removing specified combinations";
+            this.Refresh();
 
-            if (tabControl1.SelectedTab == tabPage1) //If in the first tab (basic word entry)
+            /* Remove Words Outside Specified Word Length (Tab 1 Only) */
+
+            if (WordTabs.SelectedTab == BasicTab) //If in the first tab (basic word entry)
             {
                 if (numLength.Value > 0)
                 {
@@ -82,11 +86,6 @@ namespace WordHelper
                     }
                 }
             }
-            
-
-            this.lblStatus.Text = "Removing specified combinations";
-            this.Refresh();
-
 
     /* Remove Duplicate Words in List */
             output = output.Distinct().ToList();
@@ -96,7 +95,7 @@ namespace WordHelper
 
         /* Basic Word Tab */
 
-            if (tabControl1.SelectedTab == tabPage1) //If in the first tab (basic word entry)
+            if (WordTabs.SelectedTab == BasicTab) //If in the first tab (basic word entry)
             {
 
                 /* Temp Vars */
@@ -194,7 +193,7 @@ namespace WordHelper
 
         /* Wordle Tab */ 
 
-            if (tabControl1.SelectedTab == tabPage2) //If in the second tab (wordle tab)
+            if (WordTabs.SelectedTab == WordleTab) //If in the second tab (wordle tab)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -221,15 +220,9 @@ namespace WordHelper
 
 
 
+    /* Compare Combinations to Dictionary */
 
-
-
-
-
-
-            /* Compare Combinations to Dictionary */
-
-                this.lblStatus.Text = "Spell checking...";
+            this.lblStatus.Text = "Spell checking...";
             this.Refresh();
 
             NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
@@ -245,6 +238,10 @@ namespace WordHelper
             NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
 
 
+            /* Temp Vars */
+            bool remove = true;
+            string tempLower;
+
 
             for (int i = output.Count - 1; i >= 0; i--)
             {
@@ -253,15 +250,22 @@ namespace WordHelper
                 // get the dictionary for spell checking
                 oSpell.Dictionary = oDict;
                 // test the word
-                if (!oSpell.TestWord(wordToCheck))
+                remove = true;
+
+                tempLower = wordToCheck.ToLower();
+
+
+                if (!oSpell.TestWord(tempLower))
                 {
-                    //Word does not exist in dictionary - remove it if specified
-                    if (!chkShow.Checked)
-                        output.Remove(wordToCheck);
 
-                    //IF WORD DOES NOT EXIST IN DATA BASE EITHER!!
+                    foreach (string word in lstGood.Items)  //If the word exists in the Database list
+                    {
+                        if (word == tempLower)
+                            remove = false;
+                    }
 
-
+                    if (!chkShow.Checked && remove == true) //If show all combinations is not checked 
+                        output.Remove(wordToCheck); //Removes the word if not found in dictionary or database
                 }
             }
 
@@ -419,7 +423,7 @@ namespace WordHelper
             grdWordle.CellClick += new DataGridViewCellEventHandler(grdWordle_CellClick);
 
 
-            //RefreshWords(); /* Refreshes Lists in Databases Tab */
+            RefreshWords(); /* Refreshes Lists in Databases Tab */
 
     /* Configure Serilog with C# */
 
@@ -468,267 +472,269 @@ namespace WordHelper
         }
 
 
-        //        /* IN DATABASE TAB */
+        /* IN DATABASE TAB */
 
-        //        //private void btnSerilog_Click(object sender, EventArgs e)
-        //        //{
-        //        //    /* Button for Testing Serilog Implementation */
+        private void btnSerilog_Click(object sender, EventArgs e)
+        {
+            /* Button for Testing Serilog Implementation */
 
-        //        //       /* Configure Serilog with C# */
+            /* Configure Serilog with C# */
 
-        //        //        Log.Logger = new LoggerConfiguration() //New Logger config
-        //        //            .MinimumLevel.Debug()
-        //        //            .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day) //Gives file to write errors too
-        //        //            .CreateLogger();
+            Log.Logger = new LoggerConfiguration() //New Logger config
+                .MinimumLevel.Debug()
+                .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day) //Gives file to write errors too
+                .CreateLogger();
 
-        //        //        /* Log File Located WordHelper >> bin >> Debug >> log-.txt */
+            /* Log File Located WordHelper >> bin >> Debug >> log-.txt */
 
 
-        //        //        Log.Information("I have properly initialized my logger."); //Info tag message wrote to log file
+            Log.Information("I have properly initialized my logger."); //Info tag message wrote to log file
 
 
-        //        //        MessageBox.Show("Serilog Initialization Message Wrote to log file\nWordHelper > bin > Debug > log-.txt"); //Temp Message for explaning Process
+            MessageBox.Show("Serilog Initialization Message Wrote to log file\nWordHelper > bin > Debug > log-.txt"); //Temp Message for explaning Process
 
 
-        //        //        Log.Information("Closing Serilog at the end of the application."); //Info tag message
-        //        //        Log.CloseAndFlush();
-        //        //}
+            Log.Information("Closing Serilog at the end of the application."); //Info tag message
+            Log.CloseAndFlush();
+        }
 
 
-        //        /* Function Called from Load Form Refreshes both Good Words and Bad Words List */
-        //        private void RefreshWords()
-        //        {
+        /* Function Called from Load Form Refreshes both Good Words and Bad Words List */
+        private void RefreshWords()
+        {
 
-        //            /* For Good TextBox */
+            /* For Good TextBox */
 
 
-        //            /* Step one */
-        //            lstGood.Items.Clear();
+            /* Step one */
+            lstGood.Items.Clear();
 
-        //            /* Create/Initialize/Configure the connection to the server */
+            /* Create/Initialize/Configure the connection to the server */
 
-        //            SqlConnection cn = new SqlConnection(DBInfo.cnString);
+            SqlConnection cn = new SqlConnection(DBInfo.cnString);
 
-        //            //Open the connection (we live)
+            //Open the connection (we live)
 
-        //            cn.Open();
+            cn.Open();
 
 
-        //            //create a command to get the data you want
+            //create a command to get the data you want
 
-        //            //string sql = "SELECT word FROM dbo.Goodwords";
+            //string sql = "SELECT word FROM dbo.Goodwords";
 
-        //            string sql = "SELECT word FROM dbo.jfairbanks_Goodwords";
-        //            //initialize the command object
-        //            SqlCommand cmd = new SqlCommand(sql, cn);
+            string sql = "SELECT word FROM dbo.jfairbanks_Goodwords";
+            //initialize the command object
+            SqlCommand cmd = new SqlCommand(sql, cn);
 
-        //            //configure the command to run a text query
-        //            cmd.CommandType = CommandType.Text;
+            //configure the command to run a text query
+            cmd.CommandType = CommandType.Text;
 
-        //            //run a command to capture the reader object
-        //            //which is a collection of rows of the underlying table
-        //            SqlDataReader reader = cmd.ExecuteReader();
+            //run a command to capture the reader object
+            //which is a collection of rows of the underlying table
+            SqlDataReader reader = cmd.ExecuteReader();
 
-        //            //iterate through all the rows in the collection
+            //iterate through all the rows in the collection
 
-        //            while (reader.Read())
-        //            {
-        //                //add the word to the list
+            while (reader.Read())
+            {
+                //add the word to the list
 
-        //                lstGood.Items.Add(reader["word"].ToString());
-        //            }
+                lstGood.Items.Add(reader["word"].ToString());
+            }
 
-        //            reader.Close();
+            reader.Close();
 
 
 
 
-        //            /* For Deleted TextBox */
+            /* For Deleted TextBox */
 
 
-        //            /* Step one */
-        //            lstBad.Items.Clear();
+            /* Step one */
+            lstBad.Items.Clear();
 
-        //            /* Create/Initialize/Configure the connection to the server */
+            /* Create/Initialize/Configure the connection to the server */
 
 
 
-        //            cn = new SqlConnection(DBInfo.cnString);
+            cn = new SqlConnection(DBInfo.cnString);
 
-        //            //Open the connection (we live)
+            //Open the connection (we live)
 
-        //            cn.Open();
+            cn.Open();
 
 
-        //            //create a command to get the data you want
+            //create a command to get the data you want
 
-        //            sql = "SELECT word FROM dbo.jfairbanks_Deletedwords";
-        //            //initialize the command object
-        //            SqlCommand cmd2 = new SqlCommand(sql, cn);
+            sql = "SELECT word FROM dbo.jfairbanks_Deletedwords";
+            //initialize the command object
+            SqlCommand cmd2 = new SqlCommand(sql, cn);
 
-        //            //configure the command to run a text query
-        //            cmd2.CommandType = CommandType.Text;
+            //configure the command to run a text query
+            cmd2.CommandType = CommandType.Text;
 
-        //            //run a command to capture the reader object
-        //            //which is a collection of rows of the underlying table
-        //            SqlDataReader reader2 = cmd2.ExecuteReader();
+            //run a command to capture the reader object
+            //which is a collection of rows of the underlying table
+            SqlDataReader reader2 = cmd2.ExecuteReader();
 
-        //            //iterate through all the rows in the collection
+            //iterate through all the rows in the collection
 
-        //            while (reader2.Read())
-        //            {
-        //                //add the word to the list
+            while (reader2.Read())
+            {
+                //add the word to the list
 
-        //                lstGood.Items.Add(reader2["word"].ToString());
-        //            }
+                lstGood.Items.Add(reader2["word"].ToString());
+            }
 
-        //            reader2.Close();
+            reader2.Close();
 
-        //        }
+        }
 
-        //        private void btnAddWord_Click(object sender, EventArgs e)
-        //        {
-        //            if (this.txtAddWord.Text == String.Empty) return; //If nothing is in the textbox
+        private void btnAddWord_Click(object sender, EventArgs e)
+        {
+            if (this.txtAddWord.Text == String.Empty) return; //If nothing is in the textbox
 
 
 
 
-        //            /* Exception handler logging to file defined in form load function */
+            /* Exception handler logging to file defined in form load function */
 
-        //            try
-        //            {
-        //                Log.Debug("Here we add a word to my Database:"); //Debug Tag Message
-        //                string sql = "INSERT INTO dbo.jfairbanks_Goodwords(Word) VALUES('" + txtAddWord.Text + "')";
+            try
+            {
+                Log.Debug("Here we add a word to my Database:"); //Debug Tag Message
+                string sql = "INSERT INTO dbo.jfairbanks_Goodwords(Word) VALUES('" + txtAddWord.Text + "')";
 
-        //                SqlConnection cn = new SqlConnection(DBInfo.cnString);
+                SqlConnection cn = new SqlConnection(DBInfo.cnString);
 
-        //                SqlCommand cmd = new SqlCommand(sql, cn);
+                SqlCommand cmd = new SqlCommand(sql, cn);
 
-        //                cn.Open(); //Open the connection
+                cn.Open(); //Open the connection
 
-        //                cmd.CommandType = CommandType.Text;
+                cmd.CommandType = CommandType.Text;
 
-        //                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
-        //                cn.Close();
+                cn.Close();
 
-        //                RefreshWords();
+                RefreshWords();
 
-        //                MessageBox.Show(txtAddWord.Text + " added!");
+                MessageBox.Show(txtAddWord.Text + " added!");
 
-        //                txtAddWord.Text = ""; //Clears the add word box after word successfully added
+                txtAddWord.Text = ""; //Clears the add word box after word successfully added
 
-        //            }
-        //            catch (Exception ex) //Exception handler if try statement throws an error
-        //            {
-        //                Log.Fatal(ex, "Word could not be added to Database"); //Error logged to console tagged as 'Fatal'
-        //            }
-        //        }
+            }
+            catch (Exception ex) //Exception handler if try statement throws an error
+            {
+                Log.Fatal(ex, "Word could not be added to Database"); //Error logged to console tagged as 'Fatal'
+            }
+        }
 
-        //        private void btnBad_Click(object sender, EventArgs e)
-        //        {
-        //            /* Delete from Good List and Move to Deleted List */
+        private void btnBad_Click(object sender, EventArgs e)
+        {
+            /* Delete from Good List and Move to Deleted List */
 
-        //            if (lstGood.SelectedItems.Count == 0)
-        //                return;
+            if (lstGood.SelectedItems.Count == 0)
+                return;
 
-        //            string selected = lstGood.Text;
+            string selected = lstGood.Text;
 
-        //            lstGood.Items.Remove(selected);
+            lstGood.Items.Remove(selected);
 
-        //            lstBad.Items.Add(selected);
+            lstBad.Items.Add(selected);
 
-        //            SqlConnection cn = new SqlConnection(DBInfo.cnString);
+            SqlConnection cn = new SqlConnection(DBInfo.cnString);
 
-        //            cn.Open();
+            cn.Open();
 
 
-        //            /* Exception handler logging to file defined in form load function */
+            /* Exception handler logging to file defined in form load function */
 
-        //            try
-        //            {
-        //                Log.Debug("Here we move word from good list to deleted list:"); //Debug Tag Message
+            try
+            {
+                Log.Debug("Here we move word from good list to deleted list:"); //Debug Tag Message
 
-        //                string sql = "dbo.jfairbanks_DeleteWord";
+                string sql = "dbo.jfairbanks_DeleteWord";
 
-        //                SqlCommand cmd = new SqlCommand(sql, cn);
+                SqlCommand cmd = new SqlCommand(sql, cn);
 
-        //                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
-        //                cmd.Parameters.AddWithValue("word", selected);
+                cmd.Parameters.AddWithValue("word", selected);
 
-        //                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
-        //                cn.Close();
+                cn.Close();
 
-        //            }
-        //            catch (Exception ex) //Exception handler if try statement throws an error
-        //            {
-        //                Log.Fatal(ex, "Word could not be moved..."); //Error logged to console tagged as 'Fatal'
-        //            }
+            }
+            catch (Exception ex) //Exception handler if try statement throws an error
+            {
+                Log.Fatal(ex, "Word could not be moved..."); //Error logged to console tagged as 'Fatal'
+            }
 
-        //        }
+        }
 
 
-        //        private void btnGood_Click(object sender, EventArgs e)
-        //        {
-        //            /* Delete from Deleted List and Move to Good List */
+        private void btnGood_Click(object sender, EventArgs e)
+        {
+            /* Delete from Deleted List and Move to Good List */
 
-        //            if (lstBad.SelectedItems.Count == 0)
-        //                return;
+            if (lstBad.SelectedItems.Count == 0)
+                return;
 
-        //            string selected = lstBad.Text;
+            string selected = lstBad.Text;
 
-        //            lstBad.Items.Remove(selected);
+            lstBad.Items.Remove(selected);
 
-        //            lstGood.Items.Add(selected);
+            lstGood.Items.Add(selected);
 
-        //            SqlConnection cn = new SqlConnection(DBInfo.cnString);
+            SqlConnection cn = new SqlConnection(DBInfo.cnString);
 
-        //            cn.Open();
+            cn.Open();
 
 
-        //            /* Exception handler logging to file defined in form load function */
+            /* Exception handler logging to file defined in form load function */
 
-        //            try
-        //            {
-        //                Log.Debug("Here we move word from bad list to good list:"); //Debug Tag Message
+            try
+            {
+                Log.Debug("Here we move word from bad list to good list:"); //Debug Tag Message
 
-        //                string sql = "dbo.jfairbanks_RestoreWord";
+                string sql = "dbo.jfairbanks_RestoreWord";
 
-        //                SqlCommand cmd = new SqlCommand(sql, cn);
+                SqlCommand cmd = new SqlCommand(sql, cn);
 
-        //                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
-        //                cmd.Parameters.AddWithValue("word", selected);
+                cmd.Parameters.AddWithValue("word", selected);
 
-        //                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
-        //                cn.Close();
+                cn.Close();
 
-        //            }
-        //            catch (Exception ex) //Exception handler if try statement throws an error
-        //            {
-        //                Log.Fatal(ex, "Word could not be moved..."); //Error logged to console tagged as 'Fatal'
-        //            }
-        //        }
+            }
+            catch (Exception ex) //Exception handler if try statement throws an error
+            {
+                Log.Fatal(ex, "Word could not be moved..."); //Error logged to console tagged as 'Fatal'
+            }
+        }
 
-        //        private void btnDelete_Click(object sender, EventArgs e)
-        //        {
-        //            if (this.lstBad.Text == String.Empty)
-        //                return;
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (this.lstBad.Text == String.Empty)
+                return;
 
-        //            SqlConnection cn = new SqlConnection(DBInfo.cnString);
-        //            cn.Open();
+            SqlConnection cn = new SqlConnection(DBInfo.cnString);
+            cn.Open();
 
-        //            string sql = "DELETE dbo.jfairbanks_DeletedWords WHERE word = '" + lstBad.Text + "'";
+            string sql = "DELETE dbo.jfairbanks_DeletedWords WHERE word = '" + lstBad.Text + "'";
 
-        //            SqlCommand cmd = new SqlCommand(sql, cn);
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.ExecuteNonQuery();
-        //            cn.Close();
-        //            RefreshWords();
-        //            MessageBox.Show(lstBad.Text + " deleted");
-        //        }
+            MessageBox.Show(lstBad.Text + " deleted"); //Tells user the word to be deleted
+
+            SqlCommand cmd = new SqlCommand(sql, cn);
+            cmd.CommandType = CommandType.Text;
+            cmd.ExecuteNonQuery();
+            cn.Close();
+            RefreshWords();
+        }
+
     }
 }

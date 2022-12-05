@@ -48,11 +48,11 @@
             this.btnCalculate = new System.Windows.Forms.Button();
             this.txtResult = new System.Windows.Forms.RichTextBox();
             this.numPos3 = new System.Windows.Forms.NumericUpDown();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.WordTabs = new System.Windows.Forms.TabControl();
+            this.BasicTab = new System.Windows.Forms.TabPage();
+            this.WordleTab = new System.Windows.Forms.TabPage();
             this.grdWordle = new System.Windows.Forms.DataGridView();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.DatabaseTab = new System.Windows.Forms.TabPage();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAddWord = new System.Windows.Forms.Button();
             this.txtAddWord = new System.Windows.Forms.TextBox();
@@ -67,15 +67,17 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.spelling1 = new NetSpell.SpellChecker.Spelling(this.components);
             this.spelling2 = new NetSpell.SpellChecker.Spelling(this.components);
+            this.lblDataDict = new System.Windows.Forms.Label();
+            this.lblDeleted = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos3)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.WordTabs.SuspendLayout();
+            this.BasicTab.SuspendLayout();
+            this.WordleTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdWordle)).BeginInit();
-            this.tabPage3.SuspendLayout();
+            this.DatabaseTab.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.lblStrip.SuspendLayout();
             this.SuspendLayout();
@@ -236,56 +238,56 @@
             this.numPos3.Size = new System.Drawing.Size(120, 20);
             this.numPos3.TabIndex = 11;
             // 
-            // tabControl1
+            // WordTabs
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.WordTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(12, 28);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(518, 433);
-            this.tabControl1.TabIndex = 21;
+            this.WordTabs.Controls.Add(this.BasicTab);
+            this.WordTabs.Controls.Add(this.WordleTab);
+            this.WordTabs.Controls.Add(this.DatabaseTab);
+            this.WordTabs.Location = new System.Drawing.Point(12, 28);
+            this.WordTabs.Name = "WordTabs";
+            this.WordTabs.SelectedIndex = 0;
+            this.WordTabs.Size = new System.Drawing.Size(518, 433);
+            this.WordTabs.TabIndex = 21;
             // 
-            // tabPage1
+            // BasicTab
             // 
-            this.tabPage1.Controls.Add(this.txtInput);
-            this.tabPage1.Controls.Add(this.txtLetter);
-            this.tabPage1.Controls.Add(this.txtLetter2);
-            this.tabPage1.Controls.Add(this.txtLetter3);
-            this.tabPage1.Controls.Add(this.lblChars);
-            this.tabPage1.Controls.Add(this.lblPos3);
-            this.tabPage1.Controls.Add(this.lblLetter);
-            this.tabPage1.Controls.Add(this.lblPos2);
-            this.tabPage1.Controls.Add(this.lblLetter2);
-            this.tabPage1.Controls.Add(this.lblPos);
-            this.tabPage1.Controls.Add(this.lblLetter3);
-            this.tabPage1.Controls.Add(this.lblLength);
-            this.tabPage1.Controls.Add(this.numLength);
-            this.tabPage1.Controls.Add(this.numPos3);
-            this.tabPage1.Controls.Add(this.numPos1);
-            this.tabPage1.Controls.Add(this.numPos2);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(510, 407);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Basic";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.BasicTab.Controls.Add(this.txtInput);
+            this.BasicTab.Controls.Add(this.txtLetter);
+            this.BasicTab.Controls.Add(this.txtLetter2);
+            this.BasicTab.Controls.Add(this.txtLetter3);
+            this.BasicTab.Controls.Add(this.lblChars);
+            this.BasicTab.Controls.Add(this.lblPos3);
+            this.BasicTab.Controls.Add(this.lblLetter);
+            this.BasicTab.Controls.Add(this.lblPos2);
+            this.BasicTab.Controls.Add(this.lblLetter2);
+            this.BasicTab.Controls.Add(this.lblPos);
+            this.BasicTab.Controls.Add(this.lblLetter3);
+            this.BasicTab.Controls.Add(this.lblLength);
+            this.BasicTab.Controls.Add(this.numLength);
+            this.BasicTab.Controls.Add(this.numPos3);
+            this.BasicTab.Controls.Add(this.numPos1);
+            this.BasicTab.Controls.Add(this.numPos2);
+            this.BasicTab.Location = new System.Drawing.Point(4, 22);
+            this.BasicTab.Name = "BasicTab";
+            this.BasicTab.Padding = new System.Windows.Forms.Padding(3);
+            this.BasicTab.Size = new System.Drawing.Size(510, 407);
+            this.BasicTab.TabIndex = 0;
+            this.BasicTab.Text = "Basic";
+            this.BasicTab.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // WordleTab
             // 
-            this.tabPage2.Controls.Add(this.grdWordle);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(510, 407);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Wordle";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.WordleTab.Controls.Add(this.grdWordle);
+            this.WordleTab.Location = new System.Drawing.Point(4, 22);
+            this.WordleTab.Name = "WordleTab";
+            this.WordleTab.Padding = new System.Windows.Forms.Padding(3);
+            this.WordleTab.Size = new System.Drawing.Size(510, 407);
+            this.WordleTab.TabIndex = 1;
+            this.WordleTab.Text = "Wordle";
+            this.WordleTab.UseVisualStyleBackColor = true;
             // 
             // grdWordle
             // 
@@ -295,22 +297,24 @@
             this.grdWordle.Size = new System.Drawing.Size(253, 47);
             this.grdWordle.TabIndex = 0;
             // 
-            // tabPage3
+            // DatabaseTab
             // 
-            this.tabPage3.Controls.Add(this.btnDelete);
-            this.tabPage3.Controls.Add(this.btnAddWord);
-            this.tabPage3.Controls.Add(this.txtAddWord);
-            this.tabPage3.Controls.Add(this.btnGood);
-            this.tabPage3.Controls.Add(this.btnBad);
-            this.tabPage3.Controls.Add(this.lstBad);
-            this.tabPage3.Controls.Add(this.lstGood);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(510, 407);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Database";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.DatabaseTab.Controls.Add(this.lblDeleted);
+            this.DatabaseTab.Controls.Add(this.lblDataDict);
+            this.DatabaseTab.Controls.Add(this.btnDelete);
+            this.DatabaseTab.Controls.Add(this.btnAddWord);
+            this.DatabaseTab.Controls.Add(this.txtAddWord);
+            this.DatabaseTab.Controls.Add(this.btnGood);
+            this.DatabaseTab.Controls.Add(this.btnBad);
+            this.DatabaseTab.Controls.Add(this.lstBad);
+            this.DatabaseTab.Controls.Add(this.lstGood);
+            this.DatabaseTab.Location = new System.Drawing.Point(4, 22);
+            this.DatabaseTab.Name = "DatabaseTab";
+            this.DatabaseTab.Padding = new System.Windows.Forms.Padding(3);
+            this.DatabaseTab.Size = new System.Drawing.Size(510, 407);
+            this.DatabaseTab.TabIndex = 2;
+            this.DatabaseTab.Text = "Database";
+            this.DatabaseTab.UseVisualStyleBackColor = true;
             // 
             // btnDelete
             // 
@@ -320,6 +324,7 @@
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Delete Selected Word";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnAddWord
             // 
@@ -329,6 +334,7 @@
             this.btnAddWord.TabIndex = 8;
             this.btnAddWord.Text = "Add Word";
             this.btnAddWord.UseVisualStyleBackColor = true;
+            this.btnAddWord.Click += new System.EventHandler(this.btnAddWord_Click);
             // 
             // txtAddWord
             // 
@@ -345,6 +351,7 @@
             this.btnGood.TabIndex = 6;
             this.btnGood.Text = "<<<";
             this.btnGood.UseVisualStyleBackColor = true;
+            this.btnGood.Click += new System.EventHandler(this.btnGood_Click);
             // 
             // btnBad
             // 
@@ -354,6 +361,7 @@
             this.btnBad.TabIndex = 5;
             this.btnBad.Text = ">>>";
             this.btnBad.UseVisualStyleBackColor = true;
+            this.btnBad.Click += new System.EventHandler(this.btnBad_Click);
             // 
             // lstBad
             // 
@@ -420,13 +428,31 @@
             // 
             this.spelling2.Dictionary = null;
             // 
+            // lblDataDict
+            // 
+            this.lblDataDict.AutoSize = true;
+            this.lblDataDict.Location = new System.Drawing.Point(53, 43);
+            this.lblDataDict.Name = "lblDataDict";
+            this.lblDataDict.Size = new System.Drawing.Size(103, 13);
+            this.lblDataDict.TabIndex = 10;
+            this.lblDataDict.Text = "Database Dictionary";
+            // 
+            // lblDeleted
+            // 
+            this.lblDeleted.AutoSize = true;
+            this.lblDeleted.Location = new System.Drawing.Point(304, 43);
+            this.lblDeleted.Name = "lblDeleted";
+            this.lblDeleted.Size = new System.Drawing.Size(166, 13);
+            this.lblDeleted.TabIndex = 11;
+            this.lblDeleted.Text = "Words not in Database Dictionary";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(751, 559);
             this.Controls.Add(this.lblStrip);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.WordTabs);
             this.Controls.Add(this.txtResult);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.menuStrip1);
@@ -439,13 +465,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos3)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.WordTabs.ResumeLayout(false);
+            this.BasicTab.ResumeLayout(false);
+            this.BasicTab.PerformLayout();
+            this.WordleTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.grdWordle)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
+            this.DatabaseTab.ResumeLayout(false);
+            this.DatabaseTab.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.lblStrip.ResumeLayout(false);
@@ -476,16 +502,16 @@
         private System.Windows.Forms.Button btnCalculate;
         private System.Windows.Forms.RichTextBox txtResult;
         private System.Windows.Forms.NumericUpDown numPos3;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl WordTabs;
+        private System.Windows.Forms.TabPage BasicTab;
+        private System.Windows.Forms.TabPage WordleTab;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.StatusStrip lblStrip;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.DataGridView grdWordle;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage DatabaseTab;
         private NetSpell.SpellChecker.Spelling spelling1;
         private NetSpell.SpellChecker.Spelling spelling2;
         private System.Windows.Forms.Button btnAddWord;
@@ -495,6 +521,8 @@
         private System.Windows.Forms.ListBox lstBad;
         private System.Windows.Forms.ListBox lstGood;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Label lblDataDict;
+        private System.Windows.Forms.Label lblDeleted;
     }
 }
 
