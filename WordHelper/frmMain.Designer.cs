@@ -53,6 +53,8 @@
             this.WordleTab = new System.Windows.Forms.TabPage();
             this.grdWordle = new System.Windows.Forms.DataGridView();
             this.DatabaseTab = new System.Windows.Forms.TabPage();
+            this.lblDeleted = new System.Windows.Forms.Label();
+            this.lblDataDict = new System.Windows.Forms.Label();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnAddWord = new System.Windows.Forms.Button();
             this.txtAddWord = new System.Windows.Forms.TextBox();
@@ -67,8 +69,8 @@
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.spelling1 = new NetSpell.SpellChecker.Spelling(this.components);
             this.spelling2 = new NetSpell.SpellChecker.Spelling(this.components);
-            this.lblDataDict = new System.Windows.Forms.Label();
-            this.lblDeleted = new System.Windows.Forms.Label();
+            this.lblOutput = new System.Windows.Forms.Label();
+            this.lblOptional = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).BeginInit();
@@ -84,28 +86,28 @@
             // 
             // txtInput
             // 
-            this.txtInput.Location = new System.Drawing.Point(82, 106);
+            this.txtInput.Location = new System.Drawing.Point(82, 89);
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(100, 20);
             this.txtInput.TabIndex = 0;
             // 
             // txtLetter
             // 
-            this.txtLetter.Location = new System.Drawing.Point(82, 144);
+            this.txtLetter.Location = new System.Drawing.Point(82, 187);
             this.txtLetter.Name = "txtLetter";
             this.txtLetter.Size = new System.Drawing.Size(100, 20);
             this.txtLetter.TabIndex = 1;
             // 
             // txtLetter2
             // 
-            this.txtLetter2.Location = new System.Drawing.Point(82, 184);
+            this.txtLetter2.Location = new System.Drawing.Point(82, 227);
             this.txtLetter2.Name = "txtLetter2";
             this.txtLetter2.Size = new System.Drawing.Size(100, 20);
             this.txtLetter2.TabIndex = 2;
             // 
             // txtLetter3
             // 
-            this.txtLetter3.Location = new System.Drawing.Point(82, 219);
+            this.txtLetter3.Location = new System.Drawing.Point(82, 262);
             this.txtLetter3.Name = "txtLetter3";
             this.txtLetter3.Size = new System.Drawing.Size(100, 20);
             this.txtLetter3.TabIndex = 3;
@@ -113,16 +115,16 @@
             // lblChars
             // 
             this.lblChars.AutoSize = true;
-            this.lblChars.Location = new System.Drawing.Point(79, 90);
+            this.lblChars.Location = new System.Drawing.Point(79, 73);
             this.lblChars.Name = "lblChars";
-            this.lblChars.Size = new System.Drawing.Size(58, 13);
+            this.lblChars.Size = new System.Drawing.Size(81, 13);
             this.lblChars.TabIndex = 4;
-            this.lblChars.Text = "Characters";
+            this.lblChars.Text = "Possible Letters";
             // 
             // lblLetter
             // 
             this.lblLetter.AutoSize = true;
-            this.lblLetter.Location = new System.Drawing.Point(79, 129);
+            this.lblLetter.Location = new System.Drawing.Point(79, 172);
             this.lblLetter.Name = "lblLetter";
             this.lblLetter.Size = new System.Drawing.Size(34, 13);
             this.lblLetter.TabIndex = 5;
@@ -131,7 +133,7 @@
             // lblLetter2
             // 
             this.lblLetter2.AutoSize = true;
-            this.lblLetter2.Location = new System.Drawing.Point(79, 168);
+            this.lblLetter2.Location = new System.Drawing.Point(79, 211);
             this.lblLetter2.Name = "lblLetter2";
             this.lblLetter2.Size = new System.Drawing.Size(50, 13);
             this.lblLetter2.TabIndex = 6;
@@ -140,7 +142,7 @@
             // lblLetter3
             // 
             this.lblLetter3.AutoSize = true;
-            this.lblLetter3.Location = new System.Drawing.Point(79, 207);
+            this.lblLetter3.Location = new System.Drawing.Point(79, 250);
             this.lblLetter3.Name = "lblLetter3";
             this.lblLetter3.Size = new System.Drawing.Size(50, 13);
             this.lblLetter3.TabIndex = 7;
@@ -148,21 +150,21 @@
             // 
             // numLength
             // 
-            this.numLength.Location = new System.Drawing.Point(254, 106);
+            this.numLength.Location = new System.Drawing.Point(254, 89);
             this.numLength.Name = "numLength";
             this.numLength.Size = new System.Drawing.Size(120, 20);
             this.numLength.TabIndex = 8;
             // 
             // numPos1
             // 
-            this.numPos1.Location = new System.Drawing.Point(254, 145);
+            this.numPos1.Location = new System.Drawing.Point(254, 188);
             this.numPos1.Name = "numPos1";
             this.numPos1.Size = new System.Drawing.Size(120, 20);
             this.numPos1.TabIndex = 9;
             // 
             // numPos2
             // 
-            this.numPos2.Location = new System.Drawing.Point(254, 184);
+            this.numPos2.Location = new System.Drawing.Point(254, 227);
             this.numPos2.Name = "numPos2";
             this.numPos2.Size = new System.Drawing.Size(120, 20);
             this.numPos2.TabIndex = 10;
@@ -170,7 +172,7 @@
             // lblLength
             // 
             this.lblLength.AutoSize = true;
-            this.lblLength.Location = new System.Drawing.Point(256, 90);
+            this.lblLength.Location = new System.Drawing.Point(256, 73);
             this.lblLength.Name = "lblLength";
             this.lblLength.Size = new System.Drawing.Size(40, 13);
             this.lblLength.TabIndex = 12;
@@ -179,7 +181,7 @@
             // lblPos
             // 
             this.lblPos.AutoSize = true;
-            this.lblPos.Location = new System.Drawing.Point(256, 129);
+            this.lblPos.Location = new System.Drawing.Point(251, 172);
             this.lblPos.Name = "lblPos";
             this.lblPos.Size = new System.Drawing.Size(57, 13);
             this.lblPos.TabIndex = 13;
@@ -188,7 +190,7 @@
             // lblPos2
             // 
             this.lblPos2.AutoSize = true;
-            this.lblPos2.Location = new System.Drawing.Point(256, 168);
+            this.lblPos2.Location = new System.Drawing.Point(251, 211);
             this.lblPos2.Name = "lblPos2";
             this.lblPos2.Size = new System.Drawing.Size(57, 13);
             this.lblPos2.TabIndex = 14;
@@ -197,7 +199,7 @@
             // lblPos3
             // 
             this.lblPos3.AutoSize = true;
-            this.lblPos3.Location = new System.Drawing.Point(251, 207);
+            this.lblPos3.Location = new System.Drawing.Point(251, 250);
             this.lblPos3.Name = "lblPos3";
             this.lblPos3.Size = new System.Drawing.Size(57, 13);
             this.lblPos3.TabIndex = 15;
@@ -227,13 +229,14 @@
             // 
             this.txtResult.Location = new System.Drawing.Point(536, 50);
             this.txtResult.Name = "txtResult";
+            this.txtResult.ReadOnly = true;
             this.txtResult.Size = new System.Drawing.Size(186, 407);
             this.txtResult.TabIndex = 20;
             this.txtResult.Text = "";
             // 
             // numPos3
             // 
-            this.numPos3.Location = new System.Drawing.Point(254, 222);
+            this.numPos3.Location = new System.Drawing.Point(254, 265);
             this.numPos3.Name = "numPos3";
             this.numPos3.Size = new System.Drawing.Size(120, 20);
             this.numPos3.TabIndex = 11;
@@ -254,6 +257,7 @@
             // 
             // BasicTab
             // 
+            this.BasicTab.Controls.Add(this.lblOptional);
             this.BasicTab.Controls.Add(this.txtInput);
             this.BasicTab.Controls.Add(this.txtLetter);
             this.BasicTab.Controls.Add(this.txtLetter2);
@@ -315,6 +319,24 @@
             this.DatabaseTab.TabIndex = 2;
             this.DatabaseTab.Text = "Database";
             this.DatabaseTab.UseVisualStyleBackColor = true;
+            // 
+            // lblDeleted
+            // 
+            this.lblDeleted.AutoSize = true;
+            this.lblDeleted.Location = new System.Drawing.Point(294, 43);
+            this.lblDeleted.Name = "lblDeleted";
+            this.lblDeleted.Size = new System.Drawing.Size(189, 13);
+            this.lblDeleted.TabIndex = 11;
+            this.lblDeleted.Text = "Words Removed From Possible Words";
+            // 
+            // lblDataDict
+            // 
+            this.lblDataDict.AutoSize = true;
+            this.lblDataDict.Location = new System.Drawing.Point(53, 43);
+            this.lblDataDict.Name = "lblDataDict";
+            this.lblDataDict.Size = new System.Drawing.Size(103, 13);
+            this.lblDataDict.TabIndex = 10;
+            this.lblDataDict.Text = "Database Dictionary";
             // 
             // btnDelete
             // 
@@ -428,29 +450,30 @@
             // 
             this.spelling2.Dictionary = null;
             // 
-            // lblDataDict
+            // lblOutput
             // 
-            this.lblDataDict.AutoSize = true;
-            this.lblDataDict.Location = new System.Drawing.Point(53, 43);
-            this.lblDataDict.Name = "lblDataDict";
-            this.lblDataDict.Size = new System.Drawing.Size(103, 13);
-            this.lblDataDict.TabIndex = 10;
-            this.lblDataDict.Text = "Database Dictionary";
+            this.lblOutput.AutoSize = true;
+            this.lblOutput.Location = new System.Drawing.Point(585, 460);
+            this.lblOutput.Name = "lblOutput";
+            this.lblOutput.Size = new System.Drawing.Size(80, 13);
+            this.lblOutput.TabIndex = 24;
+            this.lblOutput.Text = "Possible Words";
             // 
-            // lblDeleted
+            // lblOptional
             // 
-            this.lblDeleted.AutoSize = true;
-            this.lblDeleted.Location = new System.Drawing.Point(304, 43);
-            this.lblDeleted.Name = "lblDeleted";
-            this.lblDeleted.Size = new System.Drawing.Size(166, 13);
-            this.lblDeleted.TabIndex = 11;
-            this.lblDeleted.Text = "Words not in Database Dictionary";
+            this.lblOptional.AutoSize = true;
+            this.lblOptional.Location = new System.Drawing.Point(137, 146);
+            this.lblOptional.Name = "lblOptional";
+            this.lblOptional.Size = new System.Drawing.Size(176, 13);
+            this.lblOptional.TabIndex = 16;
+            this.lblOptional.Text = "Optional Combination Specifications";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(751, 559);
+            this.Controls.Add(this.lblOutput);
             this.Controls.Add(this.lblStrip);
             this.Controls.Add(this.WordTabs);
             this.Controls.Add(this.txtResult);
@@ -523,6 +546,8 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Label lblDataDict;
         private System.Windows.Forms.Label lblDeleted;
+        private System.Windows.Forms.Label lblOutput;
+        private System.Windows.Forms.Label lblOptional;
     }
 }
 

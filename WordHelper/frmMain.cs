@@ -31,7 +31,7 @@ namespace WordHelper
         private void btnCalculate_Click(object sender, EventArgs e)
         {
            
-            List<String> output = new List<String>(); //List with all combinations       
+            List<string> output = new List<string>(); //List with all combinations       
 
         // TODO #2 - reinitialize biggestList, your input textbox
             biggestList.Clear();
@@ -61,7 +61,7 @@ namespace WordHelper
 
             if (WordTabs.SelectedTab == BasicTab) //If in the first tab (basic word entry)
             {
-                if (numLength.Value > 0)
+                if (numLength.Value > 0) //If output word length modified
                 {
                     var length = numLength.Value;
                     int wordLength = Convert.ToInt32(length);
@@ -85,6 +85,10 @@ namespace WordHelper
                             output[i] = output[i].Remove(output[i].Length - wordLength);
                     }
                 }
+
+                else //If length of outputted words was not modified greater than 0
+                   numLength.Value = tempInput.Length; //Sets the Length of the outputted words to the length of the inputted word
+
             }
 
     /* Remove Duplicate Words in List */
@@ -191,100 +195,165 @@ namespace WordHelper
                 }
             }
 
-        /* Wordle Tab */ 
+            /* Possible Letters */
+            char[] possibleLetters = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'
+            ,'q','r','s','t','u','v','w','x','y','z'};
+           
+
+            /* Temp Vars */
+            string confirmed;
+            string somewhere;
+            string notInWord = null;
+            string combination = null; //Sum of all possible letters 
+
+            bool empty = true;
 
             if (WordTabs.SelectedTab == WordleTab) //If in the second tab (wordle tab)
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 5; i++)
                 {
-                    if (grdWordle.CurrentRow.Cells[i].Style.BackColor == Color.Green) //If letter is in confirmed spot
-                    {
-                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.White;
-                        string confirmed = grdWordle.CurrentRow.Cells[i].Value.ToString(); //Needs to be white to read in value?
-                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.Green;
-                    }
 
-                    if (grdWordle.CurrentRow.Cells[i].Style.BackColor == Color.Yellow) //If letter is somewhere in word
+                    if (grdWordle.Rows[0].Cells[i].Value != null) //If there is a Letter in the Box 
                     {
-                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.White;
-                        string somewhere = grdWordle.CurrentRow.Cells[i].Value.ToString();
-                        grdWordle.CurrentRow.Cells[i].Style.BackColor = Color.Yellow;
-                    }
+                        if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.Green) //If letter is in confirmed spot
+                        {
+                            grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White;
 
-                    if (grdWordle.CurrentRow.Cells[i].Style.BackColor == Color.White) //If letter is not in word
+                            confirmed = grdWordle.Rows[0].Cells[i].Value.ToString(); //Needs to be white to read in value?
+                            confirmed = confirmed.ToUpper(); //All inputs upper case
+                            combination += confirmed;
+
+                            grdWordle.Rows[0].Cells[i].Style.BackColor = Color.Green;
+                        }
+
+                        else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.Yellow) //If letter is somewhere in word
+                        {
+                            grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White;
+
+                            somewhere = grdWordle.Rows[0].Cells[i].Value.ToString();
+                            somewhere = somewhere.ToUpper(); //All inputs upper case
+                            combination += somewhere;
+
+                            grdWordle.Rows[0].Cells[i].Style.BackColor = Color.Yellow;
+                        }
+
+                        else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.White) //If letter is not in word
+                        {
+                            empty = false;
+                            notInWord += grdWordle.Rows[0].Cells[i].Value.ToString();
+                            notInWord = notInWord.ToLower(); //All inputs upper case
+                        }
+
+                    }
+                    else
+                        empty = true;
+                }
+
+                if (empty == false)
+                { 
+                    for (int i = 0; i < notInWord.Length; i++)
                     {
-                        string delete = grdWordle.CurrentRow.Cells[i].Value.ToString();
+                        possibleLetters = RemveFromArray(possibleLetters, notInWord[i]); //Removes Letters we know are not in word
                     }
                 }
+
+                char[] comb = combination.ToCharArray(); //Green and Yellow Letters to array of chars
+
+                output = GetArrayPerutations(possibleLetters); //All the variations of the given word now stored in output
+
+                string testOut = new string(possibleLetters);
+
+                MessageBox.Show(testOut);
+
+
+
             }
 
 
 
-    /* Compare Combinations to Dictionary */
+    ///* Compare Combinations to Dictionary */
 
-            this.lblStatus.Text = "Spell checking...";
-            this.Refresh();
+    //        this.lblStatus.Text = "Spell checking...";
+    //        this.Refresh();
 
-            NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
+    //        NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
 
-            //Debug Dictionary
-            string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
-
-
-            oDict.DictionaryFile = dictPath;
-
-            oDict.Initialize();
-
-            NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
+    //        //Debug Dictionary
+    //        string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
 
 
-            /* Temp Vars */
-            bool remove = true;
-            string tempLower;
+    //        oDict.DictionaryFile = dictPath;
+
+    //        oDict.Initialize();
+
+    //        NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
 
 
-            for (int i = output.Count - 1; i >= 0; i--)
-            {
-                // get a word
-                string wordToCheck = output[i];
-                // get the dictionary for spell checking
-                oSpell.Dictionary = oDict;
-                // test the word
-                remove = true;
-
-                tempLower = wordToCheck.ToLower();
+    //        /* Temp Vars */
+    //        bool remove = true;
+    //        string tempLower;
 
 
-                if (!oSpell.TestWord(tempLower))
-                {
+    //        for (int i = output.Count - 1; i >= 0; i--)
+    //        {
+    //            // get a word
+    //            string wordToCheck = output[i];
+    //            // get the dictionary for spell checking
+    //            oSpell.Dictionary = oDict;
+    //            // test the word
+    //            remove = false; //Bool for whether to delete word or not
+    //            string tempL; //Database word lowercase for comparison
+    //            tempLower = wordToCheck.ToLower(); //Makes all combinations lowercase
 
-                    foreach (string word in lstGood.Items)  //If the word exists in the Database list
-                    {
-                        if (word == tempLower)
-                            remove = false;
-                    }
+    //            /* Checks Both Dictionaries */
 
-                    if (!chkShow.Checked && remove == true) //If show all combinations is not checked 
-                        output.Remove(wordToCheck); //Removes the word if not found in dictionary or database
-                }
-            }
+    //            if (!oSpell.TestWord(tempLower))
+    //            {
+    //                remove = true;
+
+    //                foreach (string word in lstGood.Items)  //If the word exists in the Database list
+    //                {
+    //                    tempL = word.ToLower(); //Database word to Lower Case 
+
+    //                    if (tempL == tempLower) //Database word compared to combination in lowercase 
+    //                        remove = false;
+    //                }
+    //            }
 
 
-            //TODO #10 - sort the remaining words to make it easy to scan for the user
+    //            /* If the word is not in Either Dictionary, Checks to see if it is in the deleted word list */
+
+    //            foreach (string word in lstBad.Items)  //If the word is in removed words in Database Tab
+    //            {
+    //                tempL = word.ToLower(); //Database word to Lower Case 
+
+    //                if (tempL == tempLower) //Database word compared to combination in lowercase 
+    //                    remove = true;
+    //            }
+
+
+    //            /* Remove Words */
+    //            if (!chkShow.Checked && remove == true) //If show all combinations is not checked 
+    //                output.Remove(wordToCheck); //Removes the word if not found in dictionary or database
+
+    //        }
+
+
+    //        //TODO #10 - sort the remaining words to make it easy to scan for the user
             
-    /* Outputs all combinations to result text box */
+    ///* Outputs all combinations to result text box */
             
-            Sort(output); //Sorts List in Alphabetical Order
+    //        Sort(output); //Sorts List in Alphabetical Order
 
-            txtResult.Text = String.Join(Environment.NewLine, output); //Outputs list contents
+    //        txtResult.Text = String.Join(Environment.NewLine, output); //Outputs list contents
 
 
-            this.lblStatus.Text = "Completed";
-            this.Refresh();
+    //        this.lblStatus.Text = "Completed";
+    //        this.Refresh();
            
         }
 
-
+        /* Sort Output List */
         public void Sort<T>(IList<T> list)
         {
             List<T> tmp = new List<T>(list); //Temp List
@@ -295,6 +364,24 @@ namespace WordHelper
             {
                 list[i] = tmp[i]; //Assign items to correct pos
             }
+        }
+
+        /* Remove Possible Letters from Char Array in Wordle Tab */
+        static char[] RemveFromArray(char[] source, char value)
+        {
+            if (source == null)
+                return null;
+
+            char[] result = new char[source.Length];
+
+            int resultIdx = 0;
+            for (int ii = 0; ii < source.Length; ii++)
+            {
+                if (source[ii] != value)
+                    result[resultIdx++] = source[ii];
+            }
+
+            return result.Take(resultIdx).ToArray();
         }
 
         private static List<string> GetCharacterPermutations(List<string> masterList, char[] list, int start, int end)
@@ -401,7 +488,6 @@ namespace WordHelper
             grdWordle.RowHeadersVisible = false;
 
             /* Create buttons for Grid */
-
             DataGridViewButtonCell bc = new DataGridViewButtonCell();
             DataGridViewButtonCell bc1 = new DataGridViewButtonCell();
             DataGridViewButtonCell bc2 = new DataGridViewButtonCell();
@@ -414,6 +500,14 @@ namespace WordHelper
             grdWordle.Rows[1].Cells[2] = bc2;
             grdWordle.Rows[1].Cells[3] = bc3;
             grdWordle.Rows[1].Cells[4] = bc4;
+
+
+            /* Reset Top Cells BackColor to White */
+            grdWordle.Rows[0].Cells[0].Style.BackColor = Color.White;
+            grdWordle.Rows[0].Cells[1].Style.BackColor = Color.White;
+            grdWordle.Rows[0].Cells[2].Style.BackColor = Color.White;
+            grdWordle.Rows[0].Cells[3].Style.BackColor = Color.White;
+            grdWordle.Rows[0].Cells[4].Style.BackColor = Color.White;
 
 
             /* Set the cell to a text box */
@@ -520,8 +614,6 @@ namespace WordHelper
 
             //create a command to get the data you want
 
-            //string sql = "SELECT word FROM dbo.Goodwords";
-
             string sql = "SELECT word FROM dbo.jfairbanks_Goodwords";
             //initialize the command object
             SqlCommand cmd = new SqlCommand(sql, cn);
@@ -583,7 +675,7 @@ namespace WordHelper
             {
                 //add the word to the list
 
-                lstGood.Items.Add(reader2["word"].ToString());
+                lstBad.Items.Add(reader2["word"].ToString());
             }
 
             reader2.Close();
