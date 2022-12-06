@@ -50,6 +50,7 @@
             this.numPos3 = new System.Windows.Forms.NumericUpDown();
             this.WordTabs = new System.Windows.Forms.TabControl();
             this.BasicTab = new System.Windows.Forms.TabPage();
+            this.lblOptional = new System.Windows.Forms.Label();
             this.WordleTab = new System.Windows.Forms.TabPage();
             this.grdWordle = new System.Windows.Forms.DataGridView();
             this.DatabaseTab = new System.Windows.Forms.TabPage();
@@ -70,7 +71,6 @@
             this.spelling1 = new NetSpell.SpellChecker.Spelling(this.components);
             this.spelling2 = new NetSpell.SpellChecker.Spelling(this.components);
             this.lblOutput = new System.Windows.Forms.Label();
-            this.lblOptional = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).BeginInit();
@@ -282,6 +282,15 @@
             this.BasicTab.Text = "Basic";
             this.BasicTab.UseVisualStyleBackColor = true;
             // 
+            // lblOptional
+            // 
+            this.lblOptional.AutoSize = true;
+            this.lblOptional.Location = new System.Drawing.Point(155, 146);
+            this.lblOptional.Name = "lblOptional";
+            this.lblOptional.Size = new System.Drawing.Size(141, 13);
+            this.lblOptional.TabIndex = 16;
+            this.lblOptional.Text = "Optional Word Combinations";
+            // 
             // WordleTab
             // 
             this.WordleTab.Controls.Add(this.grdWordle);
@@ -295,6 +304,10 @@
             // 
             // grdWordle
             // 
+            this.grdWordle.AllowUserToAddRows = false;
+            this.grdWordle.AllowUserToDeleteRows = false;
+            this.grdWordle.AllowUserToResizeColumns = false;
+            this.grdWordle.AllowUserToResizeRows = false;
             this.grdWordle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdWordle.Location = new System.Drawing.Point(118, 95);
             this.grdWordle.Name = "grdWordle";
@@ -332,7 +345,7 @@
             // lblDataDict
             // 
             this.lblDataDict.AutoSize = true;
-            this.lblDataDict.Location = new System.Drawing.Point(53, 43);
+            this.lblDataDict.Location = new System.Drawing.Point(64, 43);
             this.lblDataDict.Name = "lblDataDict";
             this.lblDataDict.Size = new System.Drawing.Size(103, 13);
             this.lblDataDict.TabIndex = 10;
@@ -453,20 +466,11 @@
             // lblOutput
             // 
             this.lblOutput.AutoSize = true;
-            this.lblOutput.Location = new System.Drawing.Point(585, 460);
+            this.lblOutput.Location = new System.Drawing.Point(590, 34);
             this.lblOutput.Name = "lblOutput";
             this.lblOutput.Size = new System.Drawing.Size(80, 13);
             this.lblOutput.TabIndex = 24;
             this.lblOutput.Text = "Possible Words";
-            // 
-            // lblOptional
-            // 
-            this.lblOptional.AutoSize = true;
-            this.lblOptional.Location = new System.Drawing.Point(137, 146);
-            this.lblOptional.Name = "lblOptional";
-            this.lblOptional.Size = new System.Drawing.Size(176, 13);
-            this.lblOptional.TabIndex = 16;
-            this.lblOptional.Text = "Optional Combination Specifications";
             // 
             // frmMain
             // 

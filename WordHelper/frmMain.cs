@@ -30,21 +30,21 @@ namespace WordHelper
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-           
+
             List<string> output = new List<string>(); //List with all combinations       
 
-        // TODO #2 - reinitialize biggestList, your input textbox
+            // TODO #2 - reinitialize biggestList, your input textbox
             biggestList.Clear();
 
-        // TODO #3 - just for clarity sake, make sure all user inputs are uppercase
-               string tempInput = txtInput.Text.ToUpper(); //Reads text box (in all caps) to tempInput string
+            // TODO #3 - just for clarity sake, make sure all user inputs are uppercase
+            string tempInput = txtInput.Text.ToUpper(); //Reads text box (in all caps) to tempInput string
 
 
-        // TODO #4 - you need to convert the input from a string to a character array
-                char[] arr = tempInput.ToCharArray(); //copies character by character into array
+            // TODO #4 - you need to convert the input from a string to a character array
+            char[] arr = tempInput.ToCharArray(); //copies character by character into array
 
 
-        /* All of the words Permuations (For Basic Tab) */
+            /* All of the words Permuations (For Basic Tab) */
 
             if (WordTabs.SelectedTab == BasicTab) //If in basic tab
                 output = GetArrayPerutations(arr); //All the variations of the given word now stored in output
@@ -87,17 +87,17 @@ namespace WordHelper
                 }
 
                 else //If length of outputted words was not modified greater than 0
-                   numLength.Value = tempInput.Length; //Sets the Length of the outputted words to the length of the inputted word
+                    numLength.Value = tempInput.Length; //Sets the Length of the outputted words to the length of the inputted word
 
             }
 
-    /* Remove Duplicate Words in List */
+            /* Remove Duplicate Words in List */
             output = output.Distinct().ToList();
 
             // TODO #7 - for this next part you will ensure that if the user wants to restricts
 
 
-        /* Basic Word Tab */
+            /* Basic Word Tab */
 
             if (WordTabs.SelectedTab == BasicTab) //If in the first tab (basic word entry)
             {
@@ -195,16 +195,17 @@ namespace WordHelper
                 }
             }
 
-            /* Possible Letters */
-            char[] possibleLetters = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'
-            ,'q','r','s','t','u','v','w','x','y','z'};
-           
+            string[] confLetters = new string[5];
+            int[] confPos = new int[5];
 
             /* Temp Vars */
-            string confirmed;
+            string confirmed = null;
+            string tempC;
             string somewhere;
             string notInWord = null;
             string combination = null; //Sum of all possible letters 
+
+            int incrementor = 0;
 
             bool empty = true;
 
@@ -219,9 +220,18 @@ namespace WordHelper
                         {
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White;
 
-                            confirmed = grdWordle.Rows[0].Cells[i].Value.ToString(); //Needs to be white to read in value?
+                            confirmed += grdWordle.Rows[0].Cells[i].Value.ToString(); //Needs to be white to read in value?
+                            tempC = grdWordle.Rows[0].Cells[i].Value.ToString();
+
+
                             confirmed = confirmed.ToUpper(); //All inputs upper case
-                            combination += confirmed;
+                            tempC = tempC.ToUpper();
+                            
+
+                            confLetters[incrementor] = tempC; //Loads string char into string list
+                            confPos[incrementor] = i; //Records position of green
+
+                            combination += tempC;
 
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.Green;
                         }
@@ -243,114 +253,158 @@ namespace WordHelper
                             notInWord += grdWordle.Rows[0].Cells[i].Value.ToString();
                             notInWord = notInWord.ToLower(); //All inputs upper case
                         }
-
+                        incrementor++;
                     }
                     else
                         empty = true;
                 }
 
-                if (empty == false)
-                { 
-                    for (int i = 0; i < notInWord.Length; i++)
-                    {
-                        possibleLetters = RemveFromArray(possibleLetters, notInWord[i]); //Removes Letters we know are not in word
-                    }
+                //if (empty == false)
+                //{ 
+                //    for (int i = 0; i < notInWord.Length; i++)
+                //    {
+                //        possibleLetters = RemveFromArray(possibleLetters, notInWord[i]); //Removes Letters we know are not in word
+                //    }
+                //}
+
+                if (combination == null)
+                {
+                    MessageBox.Show("No Words Entered in Wordle...");
+                    return;
                 }
 
                 char[] comb = combination.ToCharArray(); //Green and Yellow Letters to array of chars
 
-                output = GetArrayPerutations(possibleLetters); //All the variations of the given word now stored in output
+                //output = GetArrayPerutations(possibleLetters); //All the variations of all letters except for ones in grey
 
-                string testOut = new string(possibleLetters);
-
-                MessageBox.Show(testOut);
+                output = GetArrayPerutations(comb); //Combinations of the words in green and yellow
 
 
+            /* Temp Vars for Letter at Specific Pos Method */
+                bool temDel = false;
+                int tempPosit = 0;
+ 
 
+            /* For Getting Green Letters in Correct Pos */
+
+                temDel = false;
+
+                for (int k = 0; k < 4; k++)
+                {
+
+                    if (confLetters[k] != null)
+                    {
+                        string str = confLetters[k].ToUpper();
+
+                        var charArray = str.ToCharArray();
+
+                        for (int i = output.Count - 1; i >= 0; i--)
+                        {
+                            temDel = true;
+                            tempPosit = 0;
+
+                            string tWord = output[i]; //Records words one by one from output list 
+
+                                foreach (char ch in tWord)
+                                {
+                                    if (tempPosit == k)
+                                    {
+                                        if (ch == charArray[0])
+                                            temDel = false;
+                                    }
+                                    tempPosit++;
+
+                                }
+
+                            if (temDel == true)
+                                output.RemoveAt(i);
+                        }
+                    }
+                }
             }
 
 
 
-    ///* Compare Combinations to Dictionary */
+    /* Compare Combinations to Dictionary */
 
-    //        this.lblStatus.Text = "Spell checking...";
-    //        this.Refresh();
+            this.lblStatus.Text = "Spell checking...";
+            this.Refresh();
 
-    //        NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
+            NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
 
-    //        //Debug Dictionary
-    //        string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
-
-
-    //        oDict.DictionaryFile = dictPath;
-
-    //        oDict.Initialize();
-
-    //        NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
+            //Debug Dictionary
+            string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
 
 
-    //        /* Temp Vars */
-    //        bool remove = true;
-    //        string tempLower;
+            oDict.DictionaryFile = dictPath;
+
+            oDict.Initialize();
+
+            NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
 
 
-    //        for (int i = output.Count - 1; i >= 0; i--)
-    //        {
-    //            // get a word
-    //            string wordToCheck = output[i];
-    //            // get the dictionary for spell checking
-    //            oSpell.Dictionary = oDict;
-    //            // test the word
-    //            remove = false; //Bool for whether to delete word or not
-    //            string tempL; //Database word lowercase for comparison
-    //            tempLower = wordToCheck.ToLower(); //Makes all combinations lowercase
-
-    //            /* Checks Both Dictionaries */
-
-    //            if (!oSpell.TestWord(tempLower))
-    //            {
-    //                remove = true;
-
-    //                foreach (string word in lstGood.Items)  //If the word exists in the Database list
-    //                {
-    //                    tempL = word.ToLower(); //Database word to Lower Case 
-
-    //                    if (tempL == tempLower) //Database word compared to combination in lowercase 
-    //                        remove = false;
-    //                }
-    //            }
+            /* Temp Vars */
+            bool remove = true;
+            string tempLower;
 
 
-    //            /* If the word is not in Either Dictionary, Checks to see if it is in the deleted word list */
+            for (int i = output.Count - 1; i >= 0; i--)
+            {
+                // get a word
+                string wordToCheck = output[i];
+                // get the dictionary for spell checking
+                oSpell.Dictionary = oDict;
+                // test the word
+                remove = false; //Bool for whether to delete word or not
+                string tempL; //Database word lowercase for comparison
+                tempLower = wordToCheck.ToLower(); //Makes all combinations lowercase
 
-    //            foreach (string word in lstBad.Items)  //If the word is in removed words in Database Tab
-    //            {
-    //                tempL = word.ToLower(); //Database word to Lower Case 
+                /* Checks Both Dictionaries */
 
-    //                if (tempL == tempLower) //Database word compared to combination in lowercase 
-    //                    remove = true;
-    //            }
+                if (!oSpell.TestWord(tempLower))
+                {
+                    remove = true;
 
+                    foreach (string word in lstGood.Items)  //If the word exists in the Database list
+                    {
+                        tempL = word.ToLower(); //Database word to Lower Case 
 
-    //            /* Remove Words */
-    //            if (!chkShow.Checked && remove == true) //If show all combinations is not checked 
-    //                output.Remove(wordToCheck); //Removes the word if not found in dictionary or database
-
-    //        }
-
-
-    //        //TODO #10 - sort the remaining words to make it easy to scan for the user
-            
-    ///* Outputs all combinations to result text box */
-            
-    //        Sort(output); //Sorts List in Alphabetical Order
-
-    //        txtResult.Text = String.Join(Environment.NewLine, output); //Outputs list contents
+                        if (tempL == tempLower) //Database word compared to combination in lowercase 
+                            remove = false;
+                    }
+                }
 
 
-    //        this.lblStatus.Text = "Completed";
-    //        this.Refresh();
-           
+                /* If the word is not in Either Dictionary, Checks to see if it is in the deleted word list */
+
+                foreach (string word in lstBad.Items)  //If the word is in removed words in Database Tab
+                {
+                    tempL = word.ToLower(); //Database word to Lower Case 
+
+                    if (tempL == tempLower) //Database word compared to combination in lowercase 
+                        remove = true;
+                }
+
+
+                /* Remove Words */
+                if (!chkShow.Checked && remove == true) //If show all combinations is not checked 
+                    output.Remove(wordToCheck); //Removes the word if not found in dictionary or database
+
+            }
+
+
+            //TODO #10 - sort the remaining words to make it easy to scan for the user
+
+            /* Outputs all combinations to result text box */
+
+            Sort(output); //Sorts List in Alphabetical Order
+
+            txtResult.Text = String.Join(Environment.NewLine, output); //Outputs list contents
+
+
+            this.lblStatus.Text = "Completed";
+            this.Refresh();
+
         }
 
         /* Sort Output List */
@@ -567,31 +621,6 @@ namespace WordHelper
 
 
         /* IN DATABASE TAB */
-
-        private void btnSerilog_Click(object sender, EventArgs e)
-        {
-            /* Button for Testing Serilog Implementation */
-
-            /* Configure Serilog with C# */
-
-            Log.Logger = new LoggerConfiguration() //New Logger config
-                .MinimumLevel.Debug()
-                .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day) //Gives file to write errors too
-                .CreateLogger();
-
-            /* Log File Located WordHelper >> bin >> Debug >> log-.txt */
-
-
-            Log.Information("I have properly initialized my logger."); //Info tag message wrote to log file
-
-
-            MessageBox.Show("Serilog Initialization Message Wrote to log file\nWordHelper > bin > Debug > log-.txt"); //Temp Message for explaning Process
-
-
-            Log.Information("Closing Serilog at the end of the application."); //Info tag message
-            Log.CloseAndFlush();
-        }
-
 
         /* Function Called from Load Form Refreshes both Good Words and Bad Words List */
         private void RefreshWords()
