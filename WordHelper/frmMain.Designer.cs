@@ -71,6 +71,7 @@
             this.spelling1 = new NetSpell.SpellChecker.Spelling(this.components);
             this.spelling2 = new NetSpell.SpellChecker.Spelling(this.components);
             this.lblOutput = new System.Windows.Forms.Label();
+            this.btnTemp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).BeginInit();
@@ -257,6 +258,7 @@
             // 
             // BasicTab
             // 
+            this.BasicTab.Controls.Add(this.btnTemp);
             this.BasicTab.Controls.Add(this.lblOptional);
             this.BasicTab.Controls.Add(this.txtInput);
             this.BasicTab.Controls.Add(this.txtLetter);
@@ -472,6 +474,16 @@
             this.lblOutput.TabIndex = 24;
             this.lblOutput.Text = "Possible Words";
             // 
+            // btnTemp
+            // 
+            this.btnTemp.Location = new System.Drawing.Point(332, 360);
+            this.btnTemp.Name = "btnTemp";
+            this.btnTemp.Size = new System.Drawing.Size(75, 23);
+            this.btnTemp.TabIndex = 17;
+            this.btnTemp.Text = "Test";
+            this.btnTemp.UseVisualStyleBackColor = true;
+            this.btnTemp.Click += new System.EventHandler(this.btnTemp_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -552,6 +564,7 @@
         private System.Windows.Forms.Label lblDeleted;
         private System.Windows.Forms.Label lblOutput;
         private System.Windows.Forms.Label lblOptional;
+        private System.Windows.Forms.Button btnTemp;
     }
 }
 

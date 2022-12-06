@@ -13,13 +13,15 @@ using System.Numerics;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Data.Common;
 using System.Reflection;
+using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WordHelper
 {
     public partial class frmMain : Form
     {
 
-    // TODO #1, add controls
+        // TODO #1, add controls
 
         static List<string> biggestList = new List<string>();
 
@@ -56,6 +58,8 @@ namespace WordHelper
 
             this.lblStatus.Text = "Removing specified combinations";
             this.Refresh();
+
+/* Basic Word (Tab 1) */
 
             /* Remove Words Outside Specified Word Length (Tab 1 Only) */
 
@@ -195,21 +199,25 @@ namespace WordHelper
                 }
             }
 
+/* Wordle Tab */
+
             string[] confLetters = new string[5];
-            int[] confPos = new int[5];
+
 
             /* Temp Vars */
-            string confirmed = null;
-            string tempC;
-            string somewhere;
-            string notInWord = null;
+            string confirmed = null; //Confirmed letters combined into string
+            string tempC; //Temp Confirmed Letters
+
+            string somewhere; //Letters somewhere in word 
+
+            string notInWord = null; //Letters now in word
+            
             string combination = null; //Sum of all possible letters 
 
             int incrementor = 0;
 
-            bool empty = true;
-
-            if (WordTabs.SelectedTab == WordleTab) //If in the second tab (wordle tab)
+            /* Gather User input from Wordle Tab */
+            if (WordTabs.SelectedTab == WordleTab)
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -229,7 +237,6 @@ namespace WordHelper
                             
 
                             confLetters[incrementor] = tempC; //Loads string char into string list
-                            confPos[incrementor] = i; //Records position of green
 
                             combination += tempC;
 
@@ -249,47 +256,35 @@ namespace WordHelper
 
                         else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.White) //If letter is not in word
                         {
-                            empty = false;
                             notInWord += grdWordle.Rows[0].Cells[i].Value.ToString();
                             notInWord = notInWord.ToLower(); //All inputs upper case
                         }
                         incrementor++;
                     }
-                    else
-                        empty = true;
                 }
 
-                //if (empty == false)
-                //{ 
-                //    for (int i = 0; i < notInWord.Length; i++)
-                //    {
-                //        possibleLetters = RemveFromArray(possibleLetters, notInWord[i]); //Removes Letters we know are not in word
-                //    }
-                //}
-
-                if (combination == null)
+                /* If no user input returns out of method */
+                if (combination == null && notInWord == null)
                 {
                     MessageBox.Show("No Words Entered in Wordle...");
                     return;
                 }
 
-                char[] comb = combination.ToCharArray(); //Green and Yellow Letters to array of chars
+                
+                /* Wordle Dictionary as txt File */
+                string Wordle_Path = @"valid-wordle-words.txt";
+                var logFile = File.ReadAllLines(Wordle_Path);
+                foreach (var s in logFile) output.Add(s); //Loads words from wordle dictionary into Output <string> list
 
-                //output = GetArrayPerutations(possibleLetters); //All the variations of all letters except for ones in grey
 
-                output = GetArrayPerutations(comb); //Combinations of the words in green and yellow
-
-
-            /* Temp Vars for Letter at Specific Pos Method */
-                bool temDel = false;
-                int tempPosit = 0;
+                /* Temp Vars for Letter at Specific Pos Method */
+                bool temDel;
+                int tempPosit;
  
 
             /* For Getting Green Letters in Correct Pos */
 
-                temDel = false;
-
-                for (int k = 0; k < 4; k++)
+                for (int k = 0; k < 5; k++)
                 {
 
                     if (confLetters[k] != null)
@@ -303,15 +298,22 @@ namespace WordHelper
                             temDel = true;
                             tempPosit = 0;
 
-                            string tWord = output[i]; //Records words one by one from output list 
+                            string tWord = output[i].ToUpper(); //Records words one by one from output list 
 
                                 foreach (char ch in tWord)
                                 {
-                                    if (tempPosit == k)
+
+                                    if (ch == charArray[0])
                                     {
-                                        if (ch == charArray[0])
+                                        if (tempPosit == k)
+                                        {
                                             temDel = false;
+                                            break;
+                                        }
+                                        else
+                                            temDel = true;
                                     }
+                                    
                                     tempPosit++;
 
                                 }
@@ -323,24 +325,23 @@ namespace WordHelper
                 }
             }
 
-
-
-    /* Compare Combinations to Dictionary */
+           
+            /* Compare Combinations to Dictionary */
 
             this.lblStatus.Text = "Spell checking...";
             this.Refresh();
 
-            NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
+            //NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
 
-            //Debug Dictionary
-            string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
+            ////Debug Dictionary
+            //string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
 
 
-            oDict.DictionaryFile = dictPath;
+            //oDict.DictionaryFile = dictPath;
 
-            oDict.Initialize();
+            //oDict.Initialize();
 
-            NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
+            //NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
 
 
             /* Temp Vars */
@@ -350,29 +351,29 @@ namespace WordHelper
 
             for (int i = output.Count - 1; i >= 0; i--)
             {
-                // get a word
+                //// get a word
                 string wordToCheck = output[i];
-                // get the dictionary for spell checking
-                oSpell.Dictionary = oDict;
-                // test the word
+                //// get the dictionary for spell checking
+                //oSpell.Dictionary = oDict;
+                //// test the word
                 remove = false; //Bool for whether to delete word or not
                 string tempL; //Database word lowercase for comparison
                 tempLower = wordToCheck.ToLower(); //Makes all combinations lowercase
 
-                /* Checks Both Dictionaries */
+                ///* Checks Both Dictionaries */
 
-                if (!oSpell.TestWord(tempLower))
-                {
-                    remove = true;
+                //if (!oSpell.TestWord(tempLower))
+                //{
+                //    remove = true;
 
-                    foreach (string word in lstGood.Items)  //If the word exists in the Database list
-                    {
-                        tempL = word.ToLower(); //Database word to Lower Case 
+                //    foreach (string word in lstGood.Items)  //If the word exists in the Database list
+                //    {
+                //        tempL = word.ToLower(); //Database word to Lower Case 
 
-                        if (tempL == tempLower) //Database word compared to combination in lowercase 
-                            remove = false;
-                    }
-                }
+                //        if (tempL == tempLower) //Database word compared to combination in lowercase 
+                //            remove = false;
+                //    }
+                //}
 
 
                 /* If the word is not in Either Dictionary, Checks to see if it is in the deleted word list */
@@ -857,5 +858,26 @@ namespace WordHelper
             RefreshWords();
         }
 
+        private void btnTemp_Click(object sender, EventArgs e)
+        {
+
+            //WORDLE DICTIONARY PATH ! = "C:\Users\Justin Fairbanks\Documents\VS Misc\WordHelper - Start\WordHelper - Start\WordHelper\bin\Debug\valid-wordle-words.txt"
+
+            // Specifying a file path
+            string path = @"valid-wordle-words.txt";
+
+            // Opening above file and reading it back.
+            using (FileStream fs = File.Open(path, FileMode.Open))
+            {
+                byte[] b = new byte[1024];
+                UTF8Encoding temp = new UTF8Encoding(true);
+
+                while (fs.Read(b, 0, b.Length) > 0)
+                {
+                    // Printing the file contents
+                    txtResult.Text = temp.GetString(b);
+                }
+            }
+        }
     }
 }
