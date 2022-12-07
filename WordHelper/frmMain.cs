@@ -15,6 +15,7 @@ using System.Data.Common;
 using System.Reflection;
 using System.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.ComponentModel;
 
 namespace WordHelper
 {
@@ -201,7 +202,9 @@ namespace WordHelper
 
 /* Wordle Tab */
 
-            string[] confLetters = new string[5];
+            string[] confLetters = new string[5]; //Confirmed in word
+            string[] Letters = new string[5]; //Somewhere in word
+            string[] noLetter = new string[5]; //Not in the word
 
 
             /* Temp Vars */
@@ -211,10 +214,12 @@ namespace WordHelper
             string somewhere; //Letters somewhere in word 
 
             string notInWord = null; //Letters now in word
-            
+
             string combination = null; //Sum of all possible letters 
 
-            int incrementor = 0;
+            int incrementor = 0; //Incrementor for confirmed letters
+            int incr = 0; //Incrementor for yellow letters
+            int ind = 0; //Incrementor for non letters
 
             /* Gather User input from Wordle Tab */
             if (WordTabs.SelectedTab == WordleTab)
@@ -248,7 +253,8 @@ namespace WordHelper
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White;
 
                             somewhere = grdWordle.Rows[0].Cells[i].Value.ToString();
-                            somewhere = somewhere.ToUpper(); //All inputs upper case
+                            Letters[incr] = somewhere.ToUpper(); //All inputs upper case
+                            
                             combination += somewhere;
 
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.Yellow;
@@ -256,8 +262,9 @@ namespace WordHelper
 
                         else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.White) //If letter is not in word
                         {
-                            notInWord += grdWordle.Rows[0].Cells[i].Value.ToString();
-                            notInWord = notInWord.ToLower(); //All inputs upper case
+                            notInWord = grdWordle.Rows[0].Cells[i].Value.ToString();
+                            noLetter[ind] = notInWord.ToLower(); //All inputs upper case
+                            ind++;
                         }
                         incrementor++;
                     }
@@ -284,36 +291,61 @@ namespace WordHelper
 
             /* For Getting Green Letters in Correct Pos */
 
-                for (int k = 0; k < 5; k++)
+                for (int k = 0; k < 5; k++) //Reads through whole wordle dictionary before incrementing
                 {
 
-                    if (confLetters[k] != null)
-                    {
-                        string str = confLetters[k].ToUpper();
-
-                        var charArray = str.ToCharArray();
 
                         for (int i = output.Count - 1; i >= 0; i--)
                         {
-                            temDel = true;
+                            temDel = false;
                             tempPosit = 0;
 
-                            string tWord = output[i].ToUpper(); //Records words one by one from output list 
+                                string tWord = output[i].ToUpper(); //Records words one by one from output list 
 
-                                foreach (char ch in tWord)
+                                foreach (char ch in tWord) //For each character in the word read in 
                                 {
 
-                                    if (ch == charArray[0])
+                                    if (confLetters[k] != null) /* Checks Confirmed Letters Positions */ /* WORKS DO NOT TOUCH */
                                     {
-                                        if (tempPosit == k)
-                                        {
-                                            temDel = false;
-                                            break;
-                                        }
-                                        else
-                                            temDel = true;
+                                        string str = confLetters[k].ToUpper(); //Letters in Green
+                                        var charArray = str.ToCharArray();
+
+                                            if (ch == charArray[0])
+                                            {
+                                                if (tempPosit == k)
+                                                {
+                                                    temDel = false;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    temDel = true;
+                                                     break;
+                                                }
+                                            }
+                                            else if (tempPosit == k && ch != charArray[0])
+                                            {
+                                                temDel = true;
+                                                break;
+                                            }
                                     }
-                                    
+
+                                    if (noLetter[k] != null) /* Seeing if a greyed out letter is in the word... */ /* WORKS DONT TOUCH */
+                                    {
+
+                                        string yel = noLetter[k].ToUpper(); //Letters in Yellow
+                                        var charArrayY = yel.ToCharArray();
+
+
+                                         if (ch == charArrayY[0])
+                                         {
+                                            temDel = true;
+                                            break;
+                                         }
+                                         else
+                                            temDel = false;
+                                    }
+                                  
                                     tempPosit++;
 
                                 }
@@ -321,7 +353,6 @@ namespace WordHelper
                             if (temDel == true)
                                 output.RemoveAt(i);
                         }
-                    }
                 }
             }
 
@@ -331,17 +362,17 @@ namespace WordHelper
             this.lblStatus.Text = "Spell checking...";
             this.Refresh();
 
-            //NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
+            NetSpell.SpellChecker.Dictionary.WordDictionary oDict = new NetSpell.SpellChecker.Dictionary.WordDictionary();
 
-            ////Debug Dictionary
-            //string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
+            //Debug Dictionary
+            string dictPath = Directory.GetCurrentDirectory() + @"\..\..\..\packages\\Netspell.2.1.7\\dic\\en-US.dic";
 
 
-            //oDict.DictionaryFile = dictPath;
+            oDict.DictionaryFile = dictPath;
 
-            //oDict.Initialize();
+            oDict.Initialize();
 
-            //NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
+            NetSpell.SpellChecker.Spelling oSpell = new NetSpell.SpellChecker.Spelling();
 
 
             /* Temp Vars */
@@ -351,29 +382,29 @@ namespace WordHelper
 
             for (int i = output.Count - 1; i >= 0; i--)
             {
-                //// get a word
+                // get a word
                 string wordToCheck = output[i];
-                //// get the dictionary for spell checking
-                //oSpell.Dictionary = oDict;
-                //// test the word
+                // get the dictionary for spell checking
+                oSpell.Dictionary = oDict;
+                // test the word
                 remove = false; //Bool for whether to delete word or not
                 string tempL; //Database word lowercase for comparison
                 tempLower = wordToCheck.ToLower(); //Makes all combinations lowercase
 
-                ///* Checks Both Dictionaries */
+                /* Checks Both Dictionaries */
 
-                //if (!oSpell.TestWord(tempLower))
-                //{
-                //    remove = true;
+                if (!oSpell.TestWord(tempLower))
+                {
+                    remove = true;
 
-                //    foreach (string word in lstGood.Items)  //If the word exists in the Database list
-                //    {
-                //        tempL = word.ToLower(); //Database word to Lower Case 
+                    foreach (string word in lstGood.Items)  //If the word exists in the Database list
+                    {
+                        tempL = word.ToLower(); //Database word to Lower Case 
 
-                //        if (tempL == tempLower) //Database word compared to combination in lowercase 
-                //            remove = false;
-                //    }
-                //}
+                        if (tempL == tempLower) //Database word compared to combination in lowercase 
+                            remove = false;
+                    }
+                }
 
 
                 /* If the word is not in Either Dictionary, Checks to see if it is in the deleted word list */
