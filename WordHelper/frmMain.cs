@@ -276,7 +276,7 @@ namespace WordHelper
                 }
 
                 
-                /* Wordle Dictionary as txt File */
+    /* Wordle Dictionary as txt File */
                 string Wordle_Path = @"valid-wordle-words.txt"; //Relative path (same folder as exe)
                 var logFile = File.ReadAllLines(Wordle_Path);
                 foreach (var s in logFile) output.Add(s); //Loads words from wordle dictionary into Output <string> list
@@ -303,7 +303,7 @@ namespace WordHelper
                                 foreach (char ch in tWord) //For each character in the word read in 
                                 {
 
-                                    if (confLetters[k] != null) /* Checks Confirmed Letters Positions */ /* WORKS DO NOT TOUCH */
+                                    if (confLetters[k] != null) /* Checks Confirmed Letters are in correct positions */
                                     {
                                         string grn = confLetters[k].ToUpper(); //Letters in Green
                                         var charArrayG = grn.ToCharArray();
@@ -329,7 +329,7 @@ namespace WordHelper
                                     }
 
 
-                                    if (Letters[k] != null) /* Checks if yellow Letters are somewhere in word */ /* Not working... */
+                                    if (Letters[k] != null) /* Checks if yellow Letters are somewhere in word */
                                     {
                                             string yel = Letters[k].ToUpper(); //Letters in Green
                                             var charArrayY = yel.ToCharArray();
@@ -347,7 +347,7 @@ namespace WordHelper
                                     }
 
 
-                                    if (noLetter[k] != null) /* Seeing if a greyed out letter is in the word... */ /* WORKS DONT TOUCH */
+                                    if (noLetter[k] != null) /* Checks if greyed out letter is anywhere in word */
                                     {
 
                                         string whi = noLetter[k].ToUpper(); //Letters in Yellow
@@ -374,7 +374,7 @@ namespace WordHelper
             }
 
            
-            /* Compare Combinations to Dictionary */
+    /* Compare Combinations to US Dictionary */
 
             this.lblStatus.Text = "Spell checking...";
             this.Refresh();
@@ -444,7 +444,8 @@ namespace WordHelper
 
             //TODO #10 - sort the remaining words to make it easy to scan for the user
 
-            /* Outputs all combinations to result text box */
+
+/* Outputs all combinations to result text box */
 
             Sort(output); //Sorts List in Alphabetical Order
 
@@ -456,7 +457,7 @@ namespace WordHelper
 
         }
 
-        /* Sort Output List */
+        /* Sorts Outputted List */
         public void Sort<T>(IList<T> list)
         {
             List<T> tmp = new List<T>(list); //Temp List
@@ -469,24 +470,7 @@ namespace WordHelper
             }
         }
 
-        /* Remove Possible Letters from Char Array in Wordle Tab */
-        static char[] RemveFromArray(char[] source, char value)
-        {
-            if (source == null)
-                return null;
-
-            char[] result = new char[source.Length];
-
-            int resultIdx = 0;
-            for (int ii = 0; ii < source.Length; ii++)
-            {
-                if (source[ii] != value)
-                    result[resultIdx++] = source[ii];
-            }
-
-            return result.Take(resultIdx).ToArray();
-        }
-
+/* Basic Word Tab */
         private static List<string> GetCharacterPermutations(List<string> masterList, char[] list, int start, int end)
         {
 
@@ -568,7 +552,7 @@ namespace WordHelper
             Application.Exit();
         }
 
-        /* WORDLE TAB */
+/* WORDLE TAB */
         private void frmMain_Load(object sender, EventArgs e)
         {
             /* Set Columns */
@@ -669,7 +653,7 @@ namespace WordHelper
         }
 
 
-        /* IN DATABASE TAB */
+/* IN DATABASE TAB */
 
         /* Function Called from Load Form Refreshes both Good Words and Bad Words List */
         private void RefreshWords()
@@ -904,28 +888,6 @@ namespace WordHelper
             cmd.ExecuteNonQuery();
             cn.Close();
             RefreshWords();
-        }
-
-        private void btnTemp_Click(object sender, EventArgs e)
-        {
-
-            //WORDLE DICTIONARY PATH ! = "C:\Users\Justin Fairbanks\Documents\VS Misc\WordHelper - Start\WordHelper - Start\WordHelper\bin\Debug\valid-wordle-words.txt"
-
-            // Specifying a file path
-            string path = @"valid-wordle-words.txt";
-
-            // Opening above file and reading it back.
-            using (FileStream fs = File.Open(path, FileMode.Open))
-            {
-                byte[] b = new byte[1024];
-                UTF8Encoding temp = new UTF8Encoding(true);
-
-                while (fs.Read(b, 0, b.Length) > 0)
-                {
-                    // Printing the file contents
-                    txtResult.Text = temp.GetString(b);
-                }
-            }
         }
     }
 }
