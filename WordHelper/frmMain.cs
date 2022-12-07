@@ -280,16 +280,18 @@ namespace WordHelper
                     return;
                 }
 
-                
-    /* Wordle Dictionary as txt File */
+
+        /* Wordle Dictionary as txt File */
+                output = lstGood.Items.Cast<string>().ToList(); //Add the Database dictionary to the output list first 
+
                 string Wordle_Path = @"valid-wordle-words.txt"; //Relative path (same folder as exe)
                 var logFile = File.ReadAllLines(Wordle_Path);
                 foreach (var s in logFile) output.Add(s); //Loads words from wordle dictionary into Output <string> list
 
-
                 /* Temp Vars for Letter at Specific Pos Method */
                 bool temDel;
                 int tempPosit;
+                bool nonLet;
 
     /* Validating Word Based on Green/Yellow/White Conditions */
 
@@ -302,16 +304,18 @@ namespace WordHelper
                     {
                         temDel = false;
                         tempPosit = 0;
+                        nonLet = false;
 
                             string tWord = output[i].ToUpper(); //Records words one by one from output list 
 
                             foreach (char ch in tWord) //For each character in the word read in 
                             {
+                                nonLet = false;
 
 
                     /* Checks Green Confirmed Letters are in correct positions */
 
-                                if (confLetters[k] != null)
+                            if (confLetters[k] != null)
                                 {
                                     string grn = confLetters[k].ToUpper(); //Letters in Green
                                     var charArrayG = grn.ToCharArray();
@@ -350,54 +354,55 @@ namespace WordHelper
 
                                     if (ch == charArrayY[0])
                                     {
-                                        temDel = false;
+                                        temDel = false; //letter found no need to continue searching word
                                         break;
                                     }
                                     else
                                     {
-                                        temDel = true;
+                                        temDel = true; //Doesn't break bc needs to check whole word
                                     }
                                 }
 
 
-                    /* Checks if greyed Letters are anywhere in word */
-                                if (noLetter[k] != null) 
+                    ///* Checks if greyed Letters are anywhere in word */
+                    //            if (noLetter[k] != null) 
+                    //            {
+
+                    //                string whi = noLetter[k].ToUpper(); //Letters in White
+                    //                var charArrayW = whi.ToCharArray();
+
+
+                    //                if (ch == charArrayW[0])
+                    //                {
+                    //                    temDel = true;
+                    //                    break;
+                    //                }
+                    //                else
+                    //                    temDel = false;
+                    //            }
+
+
+
+                    /* Check out if any current or previous greyed letter is in word..if so remove it */
+
+
+                                for (int j = 0; j < txtExcludedLetters.Text.Length; j++)
                                 {
 
-                                    string whi = noLetter[k].ToUpper(); //Letters in White
-                                    var charArrayW = whi.ToCharArray();
+                                    char whi = txtExcludedLetters.Text[j];
+                                    whi = Char.ToUpper(whi);
 
 
-                                    if (ch == charArrayW[0])
+                                    if (ch == whi)
                                     {
-                                        temDel = true;
-                                        break;
+                                        temDel = true; //For overall delete function
+                                        nonLet = true; //To break out of next for loop
+                                        break; //Continues back to checking current Wordle Grid
                                     }
-                                    else
-                                        temDel = false;
                                 }
 
-
-
-                    /* Check out if previosly greyed letter is in word..if so remove it */
-
-
-                                //for (int j = 0; j < txtExcludedLetters.Text.Length; j++)
-                                //{
-
-                                //    char whi = txtExcludedLetters.Text[j];
-                                //    whi = Char.ToUpper(whi);
-
-
-                                //    if (ch == whi)
-                                //    {
-                                //        temDel = true;
-                                //        break; //Continues back to checking current Wordle Grid
-                                //    }
-                                //    else
-                                //        temDel = false; //Word satisfies the excluded txt box
-                                //}
-
+                                if (nonLet == true)
+                                    break;
 
                             }
 
@@ -685,15 +690,17 @@ namespace WordHelper
         private void btnNewWordle_Click(object sender, EventArgs e)
         {
            
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++) /* Clear Wordle Grid */
             {
                 grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White; //Set all boxes to white
                 grdWordle.Rows[0].Cells[i].Value = null; //Set all boxes txt to null
             }
 
             txtExcludedLetters.Clear(); //Clear Excluded Letters Text Box
+            txtResult.Clear(); //Clears the Output txtbox
 
-            //MessageBox.Show("Grid and Stored Letters Cleared!"); //Message Box Stating Box has been cleared
+
+            MessageBox.Show("Grid and Stored Letters Cleared!"); //Message Box Stating Box has been cleared
         }
 
         public static class DBInfo //dont have to instantiate it to use it bc it is static
