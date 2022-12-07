@@ -52,6 +52,9 @@
             this.BasicTab = new System.Windows.Forms.TabPage();
             this.lblOptional = new System.Windows.Forms.Label();
             this.WordleTab = new System.Windows.Forms.TabPage();
+            this.btnNewWordle = new System.Windows.Forms.Button();
+            this.lblExcludedLetters = new System.Windows.Forms.Label();
+            this.txtExcludedLetters = new System.Windows.Forms.TextBox();
             this.grdWordle = new System.Windows.Forms.DataGridView();
             this.DatabaseTab = new System.Windows.Forms.TabPage();
             this.lblDeleted = new System.Windows.Forms.Label();
@@ -293,6 +296,9 @@
             // 
             // WordleTab
             // 
+            this.WordleTab.Controls.Add(this.btnNewWordle);
+            this.WordleTab.Controls.Add(this.lblExcludedLetters);
+            this.WordleTab.Controls.Add(this.txtExcludedLetters);
             this.WordleTab.Controls.Add(this.grdWordle);
             this.WordleTab.Location = new System.Drawing.Point(4, 22);
             this.WordleTab.Name = "WordleTab";
@@ -302,6 +308,33 @@
             this.WordleTab.Text = "Wordle";
             this.WordleTab.UseVisualStyleBackColor = true;
             // 
+            // btnNewWordle
+            // 
+            this.btnNewWordle.Location = new System.Drawing.Point(433, 378);
+            this.btnNewWordle.Name = "btnNewWordle";
+            this.btnNewWordle.Size = new System.Drawing.Size(74, 23);
+            this.btnNewWordle.TabIndex = 3;
+            this.btnNewWordle.Text = "New Wordle";
+            this.btnNewWordle.UseVisualStyleBackColor = true;
+            this.btnNewWordle.Click += new System.EventHandler(this.btnNewWordle_Click);
+            // 
+            // lblExcludedLetters
+            // 
+            this.lblExcludedLetters.AutoSize = true;
+            this.lblExcludedLetters.Location = new System.Drawing.Point(184, 207);
+            this.lblExcludedLetters.Name = "lblExcludedLetters";
+            this.lblExcludedLetters.Size = new System.Drawing.Size(86, 13);
+            this.lblExcludedLetters.TabIndex = 2;
+            this.lblExcludedLetters.Text = "Excluded Letters";
+            // 
+            // txtExcludedLetters
+            // 
+            this.txtExcludedLetters.Location = new System.Drawing.Point(146, 223);
+            this.txtExcludedLetters.Name = "txtExcludedLetters";
+            this.txtExcludedLetters.ReadOnly = true;
+            this.txtExcludedLetters.Size = new System.Drawing.Size(157, 20);
+            this.txtExcludedLetters.TabIndex = 1;
+            // 
             // grdWordle
             // 
             this.grdWordle.AllowUserToAddRows = false;
@@ -309,7 +342,7 @@
             this.grdWordle.AllowUserToResizeColumns = false;
             this.grdWordle.AllowUserToResizeRows = false;
             this.grdWordle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdWordle.Location = new System.Drawing.Point(118, 95);
+            this.grdWordle.Location = new System.Drawing.Point(108, 95);
             this.grdWordle.Name = "grdWordle";
             this.grdWordle.Size = new System.Drawing.Size(253, 47);
             this.grdWordle.TabIndex = 0;
@@ -496,6 +529,7 @@
             this.BasicTab.ResumeLayout(false);
             this.BasicTab.PerformLayout();
             this.WordleTab.ResumeLayout(false);
+            this.WordleTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdWordle)).EndInit();
             this.DatabaseTab.ResumeLayout(false);
             this.DatabaseTab.PerformLayout();
@@ -552,6 +586,9 @@
         private System.Windows.Forms.Label lblDeleted;
         private System.Windows.Forms.Label lblOutput;
         private System.Windows.Forms.Label lblOptional;
+        private System.Windows.Forms.Label lblExcludedLetters;
+        private System.Windows.Forms.TextBox txtExcludedLetters;
+        private System.Windows.Forms.Button btnNewWordle;
     }
 }
 
