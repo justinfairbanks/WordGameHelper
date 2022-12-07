@@ -221,7 +221,8 @@ namespace WordHelper
             int incr = 0; //Incrementor for yellow letters
             int ind = 0; //Incrementor for non letters
 
-            /* Gather User input from Wordle Tab */
+    /* Gather User input from Wordle */
+
             if (WordTabs.SelectedTab == WordleTab)
             {
                 for (int i = 0; i < 5; i++)
@@ -254,6 +255,7 @@ namespace WordHelper
 
                             somewhere = grdWordle.Rows[0].Cells[i].Value.ToString();
                             Letters[incr] = somewhere.ToUpper(); //All inputs upper case
+                            incr++;
                             
                             combination += somewhere;
 
@@ -279,7 +281,7 @@ namespace WordHelper
 
                 
                 /* Wordle Dictionary as txt File */
-                string Wordle_Path = @"valid-wordle-words.txt";
+                string Wordle_Path = @"valid-wordle-words.txt"; //Relative path (same folder as exe)
                 var logFile = File.ReadAllLines(Wordle_Path);
                 foreach (var s in logFile) output.Add(s); //Loads words from wordle dictionary into Output <string> list
 
@@ -289,7 +291,7 @@ namespace WordHelper
                 int tempPosit;
  
 
-            /* For Getting Green Letters in Correct Pos */
+    /* Validating Word Based on Green/Yellow/White Conditions */
 
                 for (int k = 0; k < 5; k++) //Reads through whole wordle dictionary before incrementing
                 {
@@ -307,10 +309,10 @@ namespace WordHelper
 
                                     if (confLetters[k] != null) /* Checks Confirmed Letters Positions */ /* WORKS DO NOT TOUCH */
                                     {
-                                        string str = confLetters[k].ToUpper(); //Letters in Green
-                                        var charArray = str.ToCharArray();
+                                        string grn = confLetters[k].ToUpper(); //Letters in Green
+                                        var charArrayG = grn.ToCharArray();
 
-                                            if (ch == charArray[0])
+                                            if (ch == charArrayG[0])
                                             {
                                                 if (tempPosit == k)
                                                 {
@@ -320,24 +322,44 @@ namespace WordHelper
                                                 else
                                                 {
                                                     temDel = true;
-                                                     break;
+                                                    break;
                                                 }
                                             }
-                                            else if (tempPosit == k && ch != charArray[0])
+                                            else if (tempPosit == k && ch != charArrayG[0])
                                             {
                                                 temDel = true;
                                                 break;
                                             }
                                     }
 
+
+                                    if (Letters[k] != null) /* Checks if yellow Letters are somewhere in word */
+                                    {
+                                            string yel = Letters[k].ToUpper(); //Letters in Green
+                                            var charArrayY = yel.ToCharArray();
+
+
+
+                                                if (ch == charArrayY[0])
+                                                {
+                                                    temDel = false;
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    temDel = true;
+                                                }
+                                    }
+
+
                                     if (noLetter[k] != null) /* Seeing if a greyed out letter is in the word... */ /* WORKS DONT TOUCH */
                                     {
 
-                                        string yel = noLetter[k].ToUpper(); //Letters in Yellow
-                                        var charArrayY = yel.ToCharArray();
+                                        string whi = noLetter[k].ToUpper(); //Letters in Yellow
+                                        var charArrayW = whi.ToCharArray();
 
 
-                                         if (ch == charArrayY[0])
+                                         if (ch == charArrayW[0])
                                          {
                                             temDel = true;
                                             break;
