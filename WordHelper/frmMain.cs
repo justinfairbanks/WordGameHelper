@@ -102,7 +102,7 @@ namespace WordHelper
             // TODO #7 - for this next part you will ensure that if the user wants to restricts
 
 
-            /* Basic Word Tab */
+/* Basic Word Tab */
 
             if (WordTabs.SelectedTab == BasicTab) //If in the first tab (basic word entry)
             {
@@ -288,6 +288,9 @@ namespace WordHelper
                 var logFile = File.ReadAllLines(Wordle_Path);
                 foreach (var s in logFile) output.Add(s); //Loads words from wordle dictionary into Output <string> list
 
+                //output.Clear();
+                //output.Add("Color"); //FOR DEBUGGING SPECIFIC WORD
+
                 /* Temp Vars for Letter at Specific Pos Method */
                 bool temDel;
                 int tempPosit;
@@ -315,7 +318,7 @@ namespace WordHelper
 
                     /* Checks Green Confirmed Letters are in correct positions */
 
-                            if (confLetters[k] != null)
+                                if (confLetters[k] != null)
                                 {
                                     string grn = confLetters[k].ToUpper(); //Letters in Green
                                     var charArrayG = grn.ToCharArray();
@@ -340,7 +343,7 @@ namespace WordHelper
                                     }
                                 }
 
-                                tempPosit++;
+                                //tempPosit++;
 
 
 
@@ -354,8 +357,16 @@ namespace WordHelper
 
                                     if (ch == charArrayY[0])
                                     {
-                                        temDel = false; //letter found no need to continue searching word
-                                        break;
+                                        if (tempPosit == k) //Yellow is somewhere in the word but not here
+                                        {
+                                            temDel = true; //Delete option
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            temDel = false; //letter found no need to continue searching word
+                                            break;
+                                        }
                                     }
                                     else
                                     {
@@ -363,30 +374,32 @@ namespace WordHelper
                                     }
                                 }
 
-
-                    ///* Checks if greyed Letters are anywhere in word */
-                    //            if (noLetter[k] != null) 
-                    //            {
-
-                    //                string whi = noLetter[k].ToUpper(); //Letters in White
-                    //                var charArrayW = whi.ToCharArray();
+                                tempPosit++;
 
 
-                    //                if (ch == charArrayW[0])
-                    //                {
-                    //                    temDel = true;
-                    //                    break;
-                    //                }
-                    //                else
-                    //                    temDel = false;
-                    //            }
+                            ///* Checks if greyed Letters are anywhere in word */
+                            //            if (noLetter[k] != null) 
+                            //            {
+
+                            //                string whi = noLetter[k].ToUpper(); //Letters in White
+                            //                var charArrayW = whi.ToCharArray();
+
+
+                            //                if (ch == charArrayW[0])
+                            //                {
+                            //                    temDel = true;
+                            //                    break;
+                            //                }
+                            //                else
+                            //                    temDel = false;
+                            //            }
 
 
 
-                    /* Check out if any current or previous greyed letter is in word..if so remove it */
+                            /* Check out if any current or previous greyed letter is in word..if so remove it */
 
 
-                                for (int j = 0; j < txtExcludedLetters.Text.Length; j++)
+                            for (int j = 0; j < txtExcludedLetters.Text.Length; j++)
                                 {
 
                                     char whi = txtExcludedLetters.Text[j];
