@@ -217,9 +217,7 @@ namespace WordHelper
 
             string combination = null; //Sum of all possible letters 
 
-            int incrementor = 0; //Incrementor for confirmed letters
-            int incr = 0; //Incrementor for yellow letters
-            int ind = 0; //Incrementor for non letters
+            int incrementor = 0; //Incrementor for letters position
 
     /* Gather User input from Wordle */
 
@@ -254,8 +252,7 @@ namespace WordHelper
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White;
 
                             somewhere = grdWordle.Rows[0].Cells[i].Value.ToString();
-                            Letters[incr] = somewhere.ToUpper(); //All inputs upper case
-                            incr++;
+                            Letters[incrementor] = somewhere.ToUpper(); //All inputs upper case
                             
                             combination += somewhere;
 
@@ -265,8 +262,7 @@ namespace WordHelper
                         else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.White) //If letter is not in word
                         {
                             notInWord = grdWordle.Rows[0].Cells[i].Value.ToString();
-                            noLetter[ind] = notInWord.ToLower(); //All inputs upper case
-                            ind++;
+                            noLetter[incrementor] = notInWord.ToLower(); //All inputs upper case
                         }
                         incrementor++;
                     }
@@ -333,11 +329,10 @@ namespace WordHelper
                                     }
 
 
-                                    if (Letters[k] != null) /* Checks if yellow Letters are somewhere in word */
+                                    if (Letters[k] != null) /* Checks if yellow Letters are somewhere in word */ /* Not working... */
                                     {
                                             string yel = Letters[k].ToUpper(); //Letters in Green
                                             var charArrayY = yel.ToCharArray();
-
 
 
                                                 if (ch == charArrayY[0])
