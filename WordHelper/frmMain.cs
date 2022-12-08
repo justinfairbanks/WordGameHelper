@@ -34,7 +34,7 @@ namespace WordHelper
         private void btnCalculate_Click(object sender, EventArgs e)
         {
 
-            List<string> output = new List<string>(); //List with all combinations       
+            List<string> output = new List<string>(); //Master List with all combinations       
 
             // TODO #2 - reinitialize biggestList, your input textbox
             biggestList.Clear();
@@ -62,7 +62,7 @@ namespace WordHelper
 
 /* Basic Word (Tab 1) */
 
-            /* Remove Words Outside Specified Word Length (Tab 1 Only) */
+        /* Remove Words Outside Specified Word Length (Tab 1 Only) */
 
             if (WordTabs.SelectedTab == BasicTab) //If in the first tab (basic word entry)
             {
@@ -102,7 +102,7 @@ namespace WordHelper
             // TODO #7 - for this next part you will ensure that if the user wants to restricts
 
 
-/* Basic Word Tab */
+    /* Basic Word Tab Specifictations */
 
             if (WordTabs.SelectedTab == BasicTab) //If in the first tab (basic word entry)
             {
@@ -112,7 +112,7 @@ namespace WordHelper
                 int position = 0;
 
 
-                /* Checks letters at specific positions */
+        /* Checks letters at specific positions */
 
                 if (txtLetter.Text != string.Empty && numPos1.Value > 0)
                 {
@@ -239,7 +239,7 @@ namespace WordHelper
                             confirmed = confirmed.ToUpper(); //All inputs upper case
                             tempC = tempC.ToUpper();
                             
-
+                            
                             confLetters[incrementor] = tempC; //Loads string char into string list
 
                             combination += tempC;
@@ -266,10 +266,12 @@ namespace WordHelper
                             if (txtExcludedLetters.Text.Contains(notInWord) != true) //If letter is not already in excluded word textbox
                                 txtExcludedLetters.Text += notInWord; //Add letter to excluded word text box
 
+                            combination += notInWord;
 
                             noLetter[incrementor] = notInWord.ToUpper(); //All inputs upper case
                         }
                         incrementor++;
+
                     }
                 }
 
@@ -280,8 +282,16 @@ namespace WordHelper
                     return;
                 }
 
+                /* If more than 5 letters were entered */
+                if (combination.Length > 5)
+                {
+                    MessageBox.Show("Each box must have only one letter!", "Error"); //Pop up error
+                    txtResult.Clear(); //Clear results
+                    return; //Return out of Method
+                }
 
-        /* Wordle Dictionary as txt File */
+
+    /* Wordle Dictionary as txt File */
                 output = lstGood.Items.Cast<string>().ToList(); //Add the Database dictionary to the output list first 
 
                 string Wordle_Path = @"valid-wordle-words.txt"; //Relative path (same folder as exe)
@@ -316,7 +326,7 @@ namespace WordHelper
                                 nonLet = false;
 
 
-                    /* Checks Green Confirmed Letters are in correct positions */
+                /* Checks Green Confirmed Letters are in correct positions */
 
                                 if (confLetters[k] != null)
                                 {
@@ -347,7 +357,7 @@ namespace WordHelper
 
 
 
-                    /* Checks if yellow Letters are somewhere in word */
+                /* Checks if yellow Letters are somewhere in word */
 
                                 if (Letters[k] != null)
                                 {
@@ -377,26 +387,7 @@ namespace WordHelper
                                 tempPosit++;
 
 
-                            ///* Checks if greyed Letters are anywhere in word */
-                            //            if (noLetter[k] != null) 
-                            //            {
-
-                            //                string whi = noLetter[k].ToUpper(); //Letters in White
-                            //                var charArrayW = whi.ToCharArray();
-
-
-                            //                if (ch == charArrayW[0])
-                            //                {
-                            //                    temDel = true;
-                            //                    break;
-                            //                }
-                            //                else
-                            //                    temDel = false;
-                            //            }
-
-
-
-                            /* Check out if any current or previous greyed letter is in word..if so remove it */
+                /* Check out if any current or previous greyed letter is in word..if so remove it */
 
 
                             for (int j = 0; j < txtExcludedLetters.Text.Length; j++)
@@ -428,7 +419,7 @@ namespace WordHelper
             }
 
 
-    /* Compare Combinations to US Dictionary */
+/* Compare Combinations from either tab to English Dictionary */
 
             this.lblStatus.Text = "Spell checking...";
             this.Refresh();
@@ -462,7 +453,7 @@ namespace WordHelper
                 string tempL; //Database word lowercase for comparison
                 tempLower = wordToCheck.ToLower(); //Makes all combinations lowercase
 
-                /* Checks Both Dictionaries */
+            /* Checks Both Database and English Dictionaries */
 
                 if (!oSpell.TestWord(tempLower))
                 {
@@ -478,7 +469,7 @@ namespace WordHelper
                 }
 
 
-                /* If the word is not in Either Dictionary, Checks to see if it is in the deleted word list */
+            /* If the word is not in Either Dictionary, Checks to see if it is in the deleted word list */
 
                 foreach (string word in lstBad.Items)  //If the word is in removed words in Database Tab
                 {
@@ -489,7 +480,7 @@ namespace WordHelper
                 }
 
 
-                /* Remove Words */
+            /* Remove Words */
                 if (!chkShow.Checked && remove == true) //If show all combinations is not checked 
                     output.Remove(wordToCheck); //Removes the word if not found in dictionary or database
 
@@ -600,6 +591,28 @@ namespace WordHelper
             a ^= b;
         }
 
+        /* Resets Everything on Basic Tab */
+        private void btnResetBasic_Click(object sender, EventArgs e)
+        {
+            /* Clears all of the txt boxes */
+            txtInput.Clear();
+            txtLetter.Clear();
+            txtLetter2.Clear();
+            txtLetter3.Clear();
+            txtResult.Clear();
+
+            /* Clears the Numeric Up/Down Buttons */
+            numLength.Value = 0;
+            numPos1.Value = 0;
+            numPos2.Value = 0;
+            numPos3.Value = 0;
+
+            /* Unchecks Show All Combinations */
+            chkShow.Checked = false;
+
+            MessageBox.Show("Basic Tab Reset!", "Reset");
+        }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             /* Closes Program */
@@ -612,7 +625,6 @@ namespace WordHelper
             /* Set Columns */
 
             grdWordle.ColumnCount = 5;
-            //dgvDub.ColumnCount = 5;
 
             for (int i = 0; i < 5; i++)
                 grdWordle.Columns[i].Width = 50;
@@ -620,7 +632,6 @@ namespace WordHelper
             /* Set Rows */
 
             grdWordle.RowCount = 2;
-            //dgvDud.RowCount = 2;
 
             /* Remove Column + Row Headers */
 
@@ -653,8 +664,6 @@ namespace WordHelper
 
             /* Set the cell to a text box */
 
-            // DataGridViewTextBoxCell tc = new DataGridViewTextBoxCell();
-
             grdWordle.CellClick += new DataGridViewCellEventHandler(grdWordle_CellClick);
 
 
@@ -675,6 +684,7 @@ namespace WordHelper
             Log.Information("I have properly initialized my logger."); //Info tag message wrote to log file
         }
 
+        /* Changes Background Color of the Wordle */
         private void grdWordle_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             /* Button Pushed */
@@ -699,7 +709,8 @@ namespace WordHelper
 
             }
         }
-
+        
+        /* Resets whole Wordle Tab */
         private void btnNewWordle_Click(object sender, EventArgs e)
         {
            
@@ -713,15 +724,24 @@ namespace WordHelper
             txtResult.Clear(); //Clears the Output txtbox
 
 
-            MessageBox.Show("Grid and Stored Letters Cleared!"); //Message Box Stating Box has been cleared
+            MessageBox.Show("Grid and Stored Letters Cleared!", "Wordle Reset"); //Message Box Stating Box has been cleared
+        }
+
+        /* Clears the Wordle Grid */
+        private void btnClearGrid_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 5; i++) /* Clear Wordle Grid */
+            {
+                grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White; //Set all boxes to white
+                grdWordle.Rows[0].Cells[i].Value = null; //Set all boxes txt to null
+            }
         }
 
         public static class DBInfo //dont have to instantiate it to use it bc it is static
         {
             public static readonly string cnString = "Data Source=CS-GP-S; Initial Catalog = OurDictionary; Integrated Security = False; User Id = wordee; Password=Let me in, please.; MultipleActiveResultSets=True";
         }
-
-
+        
 /* IN DATABASE TAB */
 
         /* Function Called from Load Form Refreshes both Good Words and Bad Words List */
@@ -958,6 +978,5 @@ namespace WordHelper
             cn.Close();
             RefreshWords();
         }
-
     }
 }

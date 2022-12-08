@@ -50,8 +50,10 @@
             this.numPos3 = new System.Windows.Forms.NumericUpDown();
             this.WordTabs = new System.Windows.Forms.TabControl();
             this.BasicTab = new System.Windows.Forms.TabPage();
+            this.btnResetBasic = new System.Windows.Forms.Button();
             this.lblOptional = new System.Windows.Forms.Label();
             this.WordleTab = new System.Windows.Forms.TabPage();
+            this.btnClearGrid = new System.Windows.Forms.Button();
             this.btnNewWordle = new System.Windows.Forms.Button();
             this.lblExcludedLetters = new System.Windows.Forms.Label();
             this.txtExcludedLetters = new System.Windows.Forms.TextBox();
@@ -227,6 +229,7 @@
             this.btnCalculate.Text = "Calculate";
             this.btnCalculate.UseVisualStyleBackColor = true;
             this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
+            this.btnCalculate.Enter += new System.EventHandler(this.btnCalculate_Click);
             // 
             // txtResult
             // 
@@ -260,6 +263,7 @@
             // 
             // BasicTab
             // 
+            this.BasicTab.Controls.Add(this.btnResetBasic);
             this.BasicTab.Controls.Add(this.lblOptional);
             this.BasicTab.Controls.Add(this.txtInput);
             this.BasicTab.Controls.Add(this.txtLetter);
@@ -285,6 +289,16 @@
             this.BasicTab.Text = "Basic";
             this.BasicTab.UseVisualStyleBackColor = true;
             // 
+            // btnResetBasic
+            // 
+            this.btnResetBasic.Location = new System.Drawing.Point(429, 381);
+            this.btnResetBasic.Name = "btnResetBasic";
+            this.btnResetBasic.Size = new System.Drawing.Size(75, 23);
+            this.btnResetBasic.TabIndex = 17;
+            this.btnResetBasic.Text = "Reset";
+            this.btnResetBasic.UseVisualStyleBackColor = true;
+            this.btnResetBasic.Click += new System.EventHandler(this.btnResetBasic_Click);
+            // 
             // lblOptional
             // 
             this.lblOptional.AutoSize = true;
@@ -296,6 +310,7 @@
             // 
             // WordleTab
             // 
+            this.WordleTab.Controls.Add(this.btnClearGrid);
             this.WordleTab.Controls.Add(this.btnNewWordle);
             this.WordleTab.Controls.Add(this.lblExcludedLetters);
             this.WordleTab.Controls.Add(this.txtExcludedLetters);
@@ -307,6 +322,16 @@
             this.WordleTab.TabIndex = 1;
             this.WordleTab.Text = "Wordle";
             this.WordleTab.UseVisualStyleBackColor = true;
+            // 
+            // btnClearGrid
+            // 
+            this.btnClearGrid.Location = new System.Drawing.Point(367, 119);
+            this.btnClearGrid.Name = "btnClearGrid";
+            this.btnClearGrid.Size = new System.Drawing.Size(39, 23);
+            this.btnClearGrid.TabIndex = 4;
+            this.btnClearGrid.Text = "Clear";
+            this.btnClearGrid.UseVisualStyleBackColor = true;
+            this.btnClearGrid.Click += new System.EventHandler(this.btnClearGrid_Click);
             // 
             // btnNewWordle
             // 
@@ -474,11 +499,14 @@
             // 
             // lblStrip
             // 
+            this.lblStrip.AllowMerge = false;
             this.lblStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
             this.lblStrip.Location = new System.Drawing.Point(0, 537);
             this.lblStrip.Name = "lblStrip";
             this.lblStrip.Size = new System.Drawing.Size(751, 22);
+            this.lblStrip.SizingGrip = false;
+            this.lblStrip.Stretch = false;
             this.lblStrip.TabIndex = 23;
             this.lblStrip.Text = "statusStrip1";
             // 
@@ -507,6 +535,7 @@
             // 
             // frmMain
             // 
+            this.AccessibleName = "WordHelper";
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(751, 559);
@@ -517,9 +546,13 @@
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.chkShow);
+            this.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::WordHelper.Properties.Settings.Default, "WordHelper", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MainMenuStrip = this.menuStrip1;
+            this.MaximizeBox = false;
             this.Name = "frmMain";
-            this.Text = " ";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = global::WordHelper.Properties.Settings.Default.WordHelper;
             this.Load += new System.EventHandler(this.frmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).EndInit();
@@ -589,6 +622,8 @@
         private System.Windows.Forms.Label lblExcludedLetters;
         private System.Windows.Forms.TextBox txtExcludedLetters;
         private System.Windows.Forms.Button btnNewWordle;
+        private System.Windows.Forms.Button btnClearGrid;
+        private System.Windows.Forms.Button btnResetBasic;
     }
 }
 
