@@ -5,10 +5,6 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordHelper", "WordHelper\WordHelper.csproj", "{3244B977-E037-407E-8675-3C83C9ECB9A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SerilogTest", "SerilogTest\SerilogTest.csproj", "{4CC4945C-3AF7-464A-BDCF-D67855C049B2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PermutationsTest", "PermutationsTest\PermutationsTest.csproj", "{88042576-96C8-49BF-B285-8F8FF984455E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{3244B977-E037-407E-8675-3C83C9ECB9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3244B977-E037-407E-8675-3C83C9ECB9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3244B977-E037-407E-8675-3C83C9ECB9A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CC4945C-3AF7-464A-BDCF-D67855C049B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CC4945C-3AF7-464A-BDCF-D67855C049B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CC4945C-3AF7-464A-BDCF-D67855C049B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CC4945C-3AF7-464A-BDCF-D67855C049B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88042576-96C8-49BF-B285-8F8FF984455E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88042576-96C8-49BF-B285-8F8FF984455E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88042576-96C8-49BF-B285-8F8FF984455E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88042576-96C8-49BF-B285-8F8FF984455E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

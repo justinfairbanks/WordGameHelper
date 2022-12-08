@@ -275,17 +275,18 @@ namespace WordHelper
                     }
                 }
 
-                /* If no user input returns out of method */
+            /* If no user input returns out of method */
                 if (combination == null && notInWord == null)
                 {
-                    MessageBox.Show("No Words Entered in Wordle...");
+                    MessageBox.Show("No Words Entered in Wordle...", "Wordle Error"); //Error Msg
+                    txtResult.Clear(); //Clear results
                     return;
                 }
 
-                /* If more than 5 letters were entered */
+            /* If more than 5 letters were entered */
                 if (combination.Length > 5)
                 {
-                    MessageBox.Show("Each box must have only one letter!", "Error"); //Pop up error
+                    MessageBox.Show("Each box must have only one letter!", "Wordle Error"); //Error Msg
                     txtResult.Clear(); //Clear results
                     return; //Return out of Method
                 }
@@ -297,9 +298,6 @@ namespace WordHelper
                 string Wordle_Path = @"valid-wordle-words.txt"; //Relative path (same folder as exe)
                 var logFile = File.ReadAllLines(Wordle_Path);
                 foreach (var s in logFile) output.Add(s); //Loads words from wordle dictionary into Output <string> list
-
-                //output.Clear();
-                //output.Add("Color"); //FOR DEBUGGING SPECIFIC WORD
 
                 /* Temp Vars for Letter at Specific Pos Method */
                 bool temDel;
