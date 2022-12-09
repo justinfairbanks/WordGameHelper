@@ -315,7 +315,6 @@ namespace WordHelper
                     {
                         temDel = false;
                         tempPosit = 0;
-                        nonLet = false;
 
                             string tWord = output[i].ToUpper(); //Records words one by one from output list 
 
@@ -351,9 +350,6 @@ namespace WordHelper
                                     }
                                 }
 
-                                //tempPosit++;
-
-
 
                 /* Checks if yellow Letters are somewhere in word */
 
@@ -388,7 +384,7 @@ namespace WordHelper
                 /* Check out if any current or previous greyed letter is in word..if so remove it */
 
 
-                            for (int j = 0; j < txtExcludedLetters.Text.Length; j++)
+                                for (int j = 0; j < txtExcludedLetters.Text.Length; j++)
                                 {
 
                                     char whi = txtExcludedLetters.Text[j];
@@ -399,7 +395,7 @@ namespace WordHelper
                                     {
                                         temDel = true; //For overall delete function
                                         nonLet = true; //To break out of next for loop
-                                        break; //Continues back to checking current Wordle Grid
+                                        break;
                                     }
                                 }
 
