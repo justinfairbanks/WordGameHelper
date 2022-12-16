@@ -29,6 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle33 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle34 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle35 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle36 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtInput = new System.Windows.Forms.TextBox();
             this.txtLetter = new System.Windows.Forms.TextBox();
             this.txtLetter2 = new System.Windows.Forms.TextBox();
@@ -46,7 +50,6 @@
             this.lblPos3 = new System.Windows.Forms.Label();
             this.chkShow = new System.Windows.Forms.CheckBox();
             this.btnCalculate = new System.Windows.Forms.Button();
-            this.txtResult = new System.Windows.Forms.RichTextBox();
             this.numPos3 = new System.Windows.Forms.NumericUpDown();
             this.WordTabs = new System.Windows.Forms.TabControl();
             this.BasicTab = new System.Windows.Forms.TabPage();
@@ -71,11 +74,14 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuDark = new System.Windows.Forms.ToolStripMenuItem();
             this.lblStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.spelling1 = new NetSpell.SpellChecker.Spelling(this.components);
             this.spelling2 = new NetSpell.SpellChecker.Spelling(this.components);
             this.lblOutput = new System.Windows.Forms.Label();
+            this.lstOutput = new System.Windows.Forms.ListBox();
+            this.btnRemoveOutput = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numLength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPos2)).BeginInit();
@@ -222,6 +228,7 @@
             // 
             // btnCalculate
             // 
+            this.btnCalculate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnCalculate.Location = new System.Drawing.Point(20, 490);
             this.btnCalculate.Name = "btnCalculate";
             this.btnCalculate.Size = new System.Drawing.Size(75, 23);
@@ -230,15 +237,6 @@
             this.btnCalculate.UseVisualStyleBackColor = true;
             this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
             this.btnCalculate.Enter += new System.EventHandler(this.btnCalculate_Click);
-            // 
-            // txtResult
-            // 
-            this.txtResult.Location = new System.Drawing.Point(536, 50);
-            this.txtResult.Name = "txtResult";
-            this.txtResult.ReadOnly = true;
-            this.txtResult.Size = new System.Drawing.Size(186, 407);
-            this.txtResult.TabIndex = 20;
-            this.txtResult.Text = "";
             // 
             // numPos3
             // 
@@ -310,6 +308,7 @@
             // 
             // WordleTab
             // 
+            this.WordleTab.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.WordleTab.Controls.Add(this.btnClearGrid);
             this.WordleTab.Controls.Add(this.btnNewWordle);
             this.WordleTab.Controls.Add(this.lblExcludedLetters);
@@ -354,11 +353,13 @@
             // 
             // txtExcludedLetters
             // 
+            this.txtExcludedLetters.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtExcludedLetters.Location = new System.Drawing.Point(146, 223);
             this.txtExcludedLetters.Name = "txtExcludedLetters";
             this.txtExcludedLetters.ReadOnly = true;
             this.txtExcludedLetters.Size = new System.Drawing.Size(157, 20);
             this.txtExcludedLetters.TabIndex = 1;
+            this.txtExcludedLetters.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // grdWordle
             // 
@@ -366,9 +367,35 @@
             this.grdWordle.AllowUserToDeleteRows = false;
             this.grdWordle.AllowUserToResizeColumns = false;
             this.grdWordle.AllowUserToResizeRows = false;
+            dataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle33.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grdWordle.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle33;
             this.grdWordle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle34.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grdWordle.DefaultCellStyle = dataGridViewCellStyle34;
             this.grdWordle.Location = new System.Drawing.Point(108, 95);
             this.grdWordle.Name = "grdWordle";
+            dataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle35.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grdWordle.RowHeadersDefaultCellStyle = dataGridViewCellStyle35;
+            dataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.grdWordle.RowsDefaultCellStyle = dataGridViewCellStyle36;
             this.grdWordle.Size = new System.Drawing.Size(253, 47);
             this.grdWordle.TabIndex = 0;
             // 
@@ -485,7 +512,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem});
+            this.exitToolStripMenuItem,
+            this.menuDark});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -493,9 +521,16 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(93, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // menuDark
+            // 
+            this.menuDark.Name = "menuDark";
+            this.menuDark.Size = new System.Drawing.Size(132, 22);
+            this.menuDark.Text = "Dark Mode";
+            this.menuDark.Click += new System.EventHandler(this.menuDark_Click);
             // 
             // lblStrip
             // 
@@ -527,11 +562,33 @@
             // lblOutput
             // 
             this.lblOutput.AutoSize = true;
+            this.lblOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lblOutput.Location = new System.Drawing.Point(590, 34);
             this.lblOutput.Name = "lblOutput";
-            this.lblOutput.Size = new System.Drawing.Size(80, 13);
+            this.lblOutput.Size = new System.Drawing.Size(82, 15);
             this.lblOutput.TabIndex = 24;
             this.lblOutput.Text = "Possible Words";
+            // 
+            // lstOutput
+            // 
+            this.lstOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstOutput.FormattingEnabled = true;
+            this.lstOutput.Location = new System.Drawing.Point(536, 50);
+            this.lstOutput.Name = "lstOutput";
+            this.lstOutput.Size = new System.Drawing.Size(186, 405);
+            this.lstOutput.TabIndex = 25;
+            this.lstOutput.SelectedIndexChanged += new System.EventHandler(this.lstOutput_SelectedIndexChanged);
+            // 
+            // btnRemoveOutput
+            // 
+            this.btnRemoveOutput.Location = new System.Drawing.Point(593, 461);
+            this.btnRemoveOutput.Name = "btnRemoveOutput";
+            this.btnRemoveOutput.Size = new System.Drawing.Size(86, 23);
+            this.btnRemoveOutput.TabIndex = 26;
+            this.btnRemoveOutput.Text = "Remove Word";
+            this.btnRemoveOutput.UseVisualStyleBackColor = true;
+            this.btnRemoveOutput.Visible = false;
+            this.btnRemoveOutput.Click += new System.EventHandler(this.btnRemoveOutput_Click);
             // 
             // frmMain
             // 
@@ -539,10 +596,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(751, 559);
+            this.Controls.Add(this.btnRemoveOutput);
+            this.Controls.Add(this.lstOutput);
             this.Controls.Add(this.lblOutput);
             this.Controls.Add(this.lblStrip);
             this.Controls.Add(this.WordTabs);
-            this.Controls.Add(this.txtResult);
             this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.chkShow);
@@ -594,7 +652,6 @@
         private System.Windows.Forms.Label lblPos3;
         private System.Windows.Forms.CheckBox chkShow;
         private System.Windows.Forms.Button btnCalculate;
-        private System.Windows.Forms.RichTextBox txtResult;
         private System.Windows.Forms.NumericUpDown numPos3;
         private System.Windows.Forms.TabControl WordTabs;
         private System.Windows.Forms.TabPage BasicTab;
@@ -624,6 +681,9 @@
         private System.Windows.Forms.Button btnNewWordle;
         private System.Windows.Forms.Button btnClearGrid;
         private System.Windows.Forms.Button btnResetBasic;
+        private System.Windows.Forms.ListBox lstOutput;
+        private System.Windows.Forms.Button btnRemoveOutput;
+        private System.Windows.Forms.ToolStripMenuItem menuDark;
     }
 }
 

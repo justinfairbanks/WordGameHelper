@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Text;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.ComponentModel;
+using System.Collections;
 
 namespace WordHelper
 {
@@ -204,7 +205,6 @@ namespace WordHelper
 
             string[] confLetters = new string[5]; //Confirmed in word
             string[] Letters = new string[5]; //Somewhere in word
-            string[] noLetter = new string[5]; //Not in the word
 
 
             /* Temp Vars */
@@ -266,9 +266,19 @@ namespace WordHelper
                             if (txtExcludedLetters.Text.Contains(notInWord) != true) //If letter is not already in excluded word textbox
                                 txtExcludedLetters.Text += notInWord; //Add letter to excluded word text box
 
-                            combination += notInWord;
+                            combination += notInWord; //All inputs upper case
 
-                            noLetter[incrementor] = notInWord.ToUpper(); //All inputs upper case
+                            string conv = txtExcludedLetters.Text; //Convert text box to string
+
+                            txtExcludedLetters.Clear(); //Clear txt box
+
+                            char[] convArr = conv.ToCharArray(); //Convert exluded letters string to char array
+
+                            Array.Sort(convArr); //Alphabetically sort excluded letters
+
+                            foreach (char c in convArr) 
+                                txtExcludedLetters.Text += c; //Load excluded letters back into txt box
+
                         }
                         incrementor++;
 
@@ -279,7 +289,9 @@ namespace WordHelper
                 if (combination == null && notInWord == null)
                 {
                     MessageBox.Show("No Words Entered in Wordle...", "Wordle Error"); //Error Msg
-                    txtResult.Clear(); //Clear results
+                    lstOutput.DataSource = null; //Clear output results
+                    lstOutput.Items.Clear();
+                    btnRemoveOutput.Visible = false; //Make remove output button disappear
                     return;
                 }
 
@@ -287,12 +299,24 @@ namespace WordHelper
                 if (combination.Length > 5)
                 {
                     MessageBox.Show("Each box must have only one letter!", "Wordle Error"); //Error Msg
-                    txtResult.Clear(); //Clear results
+                    lstOutput.DataSource = null; //Clear output results
+                    lstOutput.Items.Clear();
+                    btnRemoveOutput.Visible = false; //Make remove output button disappear
+                    return; //Return out of Method
+                }
+
+            /* If less than 5 letters were entered */
+                if (combination.Length < 5)
+                {
+                    MessageBox.Show("Each box must have a letter!", "Wordle Error"); //Error Msg
+                    lstOutput.DataSource = null; //Clear output results
+                    lstOutput.Items.Clear();
+                    btnRemoveOutput.Visible = false; //Make remove output button disappear
                     return; //Return out of Method
                 }
 
 
-    /* Wordle Dictionary as txt File */
+                /* Wordle Dictionary as txt File */
                 output = lstGood.Items.Cast<string>().ToList(); //Add the Database dictionary to the output list first 
 
                 string Wordle_Path = @"valid-wordle-words.txt"; //Relative path (same folder as exe)
@@ -488,12 +512,33 @@ namespace WordHelper
 
             Sort(output); //Sorts List in Alphabetical Order
 
-            txtResult.Text = String.Join(Environment.NewLine, output); //Outputs list contents
+            lstOutput.Items.Clear(); //Clear Output List Box
 
+            lstOutput.Items.AddRange(output.ToArray()); //Add output list to output list box
 
             this.lblStatus.Text = "Completed";
             this.Refresh();
 
+        }
+
+        /* If word is selected in output list */
+        private void lstOutput_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnRemoveOutput.Visible = true;
+        }
+
+        private void btnRemoveOutput_Click(object sender, EventArgs e)
+        {
+            if (lstOutput.SelectedItems.Count == 0) //If nothing is selected in output list box
+                return;
+
+            string selected = lstOutput.Text; //Store selected word as temp string
+
+            lstOutput.Items.Remove(selected); //Remove from output list box
+
+            lstBad.Items.Add(selected); //Add to removed words in Database Tab
+
+            btnRemoveOutput.Visible = false;
         }
 
         /* Sorts Outputted List */
@@ -593,7 +638,9 @@ namespace WordHelper
             txtLetter.Clear();
             txtLetter2.Clear();
             txtLetter3.Clear();
-            txtResult.Clear();
+            lstOutput.DataSource = null; //Clear output results
+            lstOutput.Items.Clear();
+            btnRemoveOutput.Visible = false; //Make remove output button disappear
 
             /* Clears the Numeric Up/Down Buttons */
             numLength.Value = 0;
@@ -700,8 +747,10 @@ namespace WordHelper
                     style.BackColor = Color.White;
 
                 grdWordle.Rows[e.RowIndex - 1].Cells[e.ColumnIndex].Style = style;
-
             }
+
+            btnRemoveOutput.Visible = false; //Make delete word option invisible
+            lstOutput.ClearSelected(); //Unselect Selected Word
         }
         
         /* Resets whole Wordle Tab */
@@ -715,7 +764,10 @@ namespace WordHelper
             }
 
             txtExcludedLetters.Clear(); //Clear Excluded Letters Text Box
-            txtResult.Clear(); //Clears the Output txtbox
+            lstOutput.DataSource = null; //Clear output results
+            lstOutput.Items.Clear();
+
+            btnRemoveOutput.Visible = false; //Make remove output button disappear
 
 
             MessageBox.Show("Grid and Stored Letters Cleared!", "Wordle Reset"); //Message Box Stating Box has been cleared
@@ -731,12 +783,48 @@ namespace WordHelper
             }
         }
 
+        private void menuDark_Click(object sender, EventArgs e)
+        {
+            BackColor = Color.Black;
+            lblStatus.BackColor = Color.Gray;
+            chkShow.BackColor = Color.Gray;
+            lblOutput.BackColor = Color.Gray;
+            lblExcludedLetters.BackColor = Color.Gray;
+            txtExcludedLetters.BackColor = Color.Gray;
+            txtExcludedLetters.ForeColor = Color.GhostWhite;
+
+            menuStrip1.BackColor = Color.Black;
+            menuStrip1.ForeColor = Color.GhostWhite;
+            BasicTab.BackColor = Color.Black;
+            WordleTab.BackColor = Color.Black;
+            lstOutput.BackColor = Color.Black;
+            lstOutput.ForeColor = Color.GhostWhite;
+            DatabaseTab.BackColor = Color.Black;
+            lblStrip.BackColor = Color.Black;
+
+            btnCalculate.BackColor = Color.Black;
+            btnCalculate.ForeColor = Color.GhostWhite;
+
+            btnClearGrid.BackColor = Color.Black;
+            btnClearGrid.ForeColor = Color.Red;
+
+            btnNewWordle.BackColor = Color.Black;
+            btnNewWordle.ForeColor = Color.GhostWhite;
+
+
+            for (int i = 0; i < 5; i++)
+                grdWordle.Rows[1].Cells[i].Style.ForeColor = Color.Black;
+
+        }
+
+
+
         public static class DBInfo //dont have to instantiate it to use it bc it is static
         {
             public static readonly string cnString = "Data Source=CS-GP-S; Initial Catalog = OurDictionary; Integrated Security = False; User Id = wordee; Password=Let me in, please.; MultipleActiveResultSets=True";
         }
-        
-/* IN DATABASE TAB */
+
+        /* IN DATABASE TAB */
 
         /* Function Called from Load Form Refreshes both Good Words and Bad Words List */
         private void RefreshWords()
