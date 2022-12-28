@@ -1,4 +1,4 @@
-# WordGameSolver
+# WordGameHelper
 C# Event Driven Final Project
 
 C# Windows Forms App to output possible words satisfying given conditions in word games
