@@ -1,4 +1,5 @@
 # WordGameSolver
+C# Event Driven Final Project
 
 C# Windows Forms App to help in word games 
 
