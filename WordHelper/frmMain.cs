@@ -17,6 +17,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.ComponentModel;
 using System.Collections;
 using Microsoft.Extensions.DependencyModel;
+using System.Collections.ObjectModel;
 
 namespace WordHelper
 {
@@ -77,7 +78,7 @@ namespace WordHelper
             foreach (var s in logFile) wordList.Add(s);
 
 
-            //RefreshWords(); /* Refreshes Lists in Databases Tab */ //COMMENTED OUT BC DATABASE IS NOT REMOTE ACCESS
+            RefreshWords(); /* Refreshes Lists in Databases Tab */
 
         /* Configure Serilog with C# */
 
@@ -598,41 +599,23 @@ namespace WordHelper
         {
             if (lstOutput.SelectedItems.Count == 0)
                 return;
-
+            
             string selected = lstOutput.Text;
             lstOutput.Items.Remove(selected);
             lstBad.Items.Add(selected);
 
             btnRemoveOutput.Visible = false;
 
+            string sql = "INSERT INTO dbo.BadWord(word) VALUES('" + selected + "')";
 
-            //SqlConnection cn = new SqlConnection(DBInfo.cnString);
+            SqlConnection cn = new SqlConnection(DBInfo.cnString);
+            SqlCommand cmd = new SqlCommand(sql, cn);
 
-            //cn.Open();
+            cn.Open();
 
-            ///* Exception handler logging to file defined in form load function */
-
-            //try
-            //{
-            //    Log.Debug("Delete word from output"); //Debug Tag Message
-
-            //    string sql = "dbo.jfairbanks_DeleteWord";
-
-            //    SqlCommand cmd = new SqlCommand(sql, cn);
-
-            //    cmd.CommandType = CommandType.StoredProcedure;
-
-            //    cmd.Parameters.AddWithValue("word", selected);
-
-            //    cmd.ExecuteNonQuery();
-
-            //    cn.Close();
-
-            //}
-            //catch (Exception ex) //Exception handler if try statement throws an error
-            //{
-            //    Log.Fatal(ex, "Word could not be moved..."); //Error logged to console tagged as 'Fatal'
-            //}
+            cmd.CommandType = CommandType.Text;
+            cmd.ExecuteNonQuery();
+            cn.Close();
 
         }
 
@@ -776,9 +759,9 @@ namespace WordHelper
             }
         }
 
-        public static class DBInfo //Global Database Source
+        public static class DBInfo //Global Azure SQL Database Source
         {
-            public static readonly string cnString = "Data Source=CS-GP-S; Initial Catalog = OurDictionary; Integrated Security = False; User Id = wordee; Password=Let me in, please.; MultipleActiveResultSets=True";
+            public static readonly string cnString = "Server=tcp:wordhelperdictionary.database.windows.net,1433;Initial Catalog=WordDictionary;Persist Security Info=False;User ID=sqladmin;Password=SecretPassword123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
         }
 
         private void RefreshWords()
@@ -791,7 +774,8 @@ namespace WordHelper
             SqlConnection cn = new SqlConnection(DBInfo.cnString);
             cn.Open();
 
-            string sql = "SELECT word FROM dbo.jfairbanks_Goodwords";
+            string sql = "SELECT word FROM dbo.GoodWord";
+
             SqlCommand cmd = new SqlCommand(sql, cn);
 
             cmd.CommandType = CommandType.Text;
@@ -804,14 +788,15 @@ namespace WordHelper
 
             reader.Close();
 
-            /* For Deleted TextBox */
+        /* For Deleted TextBox */
 
             lstBad.Items.Clear();
 
             cn = new SqlConnection(DBInfo.cnString);
             cn.Open();
 
-            sql = "SELECT word FROM dbo.jfairbanks_Deletedwords";
+            sql = "SELECT word FROM dbo.BadWord";
+
             SqlCommand cmd2 = new SqlCommand(sql, cn);
 
             cmd2.CommandType = CommandType.Text;
@@ -820,7 +805,7 @@ namespace WordHelper
 
 
             while (reader2.Read())
-                lstBad.Items.Add(reader2["word"].ToString());
+                lstBad.Items.Add(reader2["word"].ToString()); //Change to "word"
 
             reader2.Close();
         }
@@ -835,7 +820,7 @@ namespace WordHelper
             try
             {
                 Log.Debug("Add word to Database Dictionary:"); //Debug Tag Message
-                string sql = "INSERT INTO dbo.jfairbanks_Goodwords(Word) VALUES('" + txtAddWord.Text + "')";
+                string sql = "INSERT INTO dbo.GoodWord(word) VALUES('" + txtAddWord.Text + "')";
 
                 SqlConnection cn = new SqlConnection(DBInfo.cnString);
                 SqlCommand cmd = new SqlCommand(sql, cn);
@@ -879,13 +864,21 @@ namespace WordHelper
             {
                 Log.Debug("Move word to Deleted List");
 
-                string sql = "dbo.jfairbanks_DeleteWord";
-
+                string sql = "INSERT INTO dbo.BadWord(word) VALUES('" + selected + "')";
                 SqlCommand cmd = new SqlCommand(sql, cn);
-
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("word", selected);
+                cmd.CommandType = CommandType.Text;
                 cmd.ExecuteNonQuery();
+
+
+
+                sql = "DELETE dbo.GoodWord WHERE word = '" + selected + "'";
+
+                MessageBox.Show(selected + " deleted");
+
+                cmd = new SqlCommand(sql, cn);
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteNonQuery();
+
 
                 cn.Close();
             }
@@ -910,20 +903,29 @@ namespace WordHelper
             cn.Open();
 
 
-        /* Exception handler logging to file defined in form load function */
+            /* Exception handler logging to file defined in form load function */
 
             try
             {
                 Log.Debug("Move word to good list");
 
-                string sql = "dbo.jfairbanks_RestoreWord";
 
+                string sql = "INSERT INTO dbo.GoodWord(word) VALUES('" + selected + "')";
                 SqlCommand cmd = new SqlCommand(sql, cn);
-
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("word", selected);
+                cmd.CommandType = CommandType.Text;
                 cmd.ExecuteNonQuery();
 
+
+
+                sql = "DELETE dbo.BadWord WHERE word = '" + selected + "'";
+
+                MessageBox.Show(selected + " deleted");
+
+                cmd = new SqlCommand(sql, cn);
+                cmd.CommandType = CommandType.Text;
+                cmd.ExecuteNonQuery();
+                
+            
                 cn.Close();
             }
             catch (Exception ex)
@@ -939,7 +941,7 @@ namespace WordHelper
             SqlConnection cn = new SqlConnection(DBInfo.cnString);
             cn.Open();
 
-            string sql = "DELETE dbo.jfairbanks_DeletedWords WHERE word = '" + lstBad.Text + "'";
+            string sql = "DELETE dbo.BadWord WHERE word = '" + lstBad.Text + "'";
 
             MessageBox.Show(lstBad.Text + " deleted");
 
