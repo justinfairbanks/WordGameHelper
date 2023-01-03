@@ -326,9 +326,9 @@ namespace WordHelper
                 for (int i = 0; i < 5; i++)
                 {
 
-                    if (grdWordle.Rows[0].Cells[i].Value != null) //If there is a Letter in the Box 
+                    if (grdWordle.Rows[0].Cells[i].Value != null)
                     {
-                        if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.Green) //If letter is in confirmed spot
+                        if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.Green) // If letter is in confirmed spot
                         {
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White;
 
@@ -338,7 +338,7 @@ namespace WordHelper
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.Green;
                         }
 
-                        else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.Yellow) //If letter is somewhere in word
+                        else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.Yellow) // If letter is somewhere in word
                         {
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.White;
 
@@ -348,7 +348,7 @@ namespace WordHelper
                             grdWordle.Rows[0].Cells[i].Style.BackColor = Color.Yellow;
                         }
 
-                        else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.White) //If letter is not in word
+                        else if (grdWordle.Rows[0].Cells[i].Style.BackColor == Color.White) // If letter is not in word
                         {
                             notInWord = grdWordle.Rows[0].Cells[i].Value.ToString();
 
@@ -397,8 +397,8 @@ namespace WordHelper
                 }
 
 
-                foreach(string item in lstGood.Items)
-                    wordList.Add(item); //Add the Database dictionary to the output list 
+                foreach(string item in lstGood.Items) // Add the Database dictionary to the output list 
+                wordList.Add(item);
 
 
                 bool temDel;
@@ -511,7 +511,7 @@ namespace WordHelper
 
         /* Compare Combinations from either tab to English Dictionary */
 
-            wordList = wordList.Distinct().ToList(); // Remove Duplicate Words in List
+            wordList = wordList.Distinct().ToList();
 
             this.lblStatus.Text = "Spell checking...";
             this.Refresh();
