@@ -5,19 +5,8 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
 using System.Linq;
 using System.IO;
-using System.Numerics;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Data.Common;
-using System.Reflection;
-using System.Text;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.ComponentModel;
-using System.Collections;
-using Microsoft.Extensions.DependencyModel;
-using System.Collections.ObjectModel;
 
 namespace WordHelper
 {
@@ -521,6 +510,8 @@ namespace WordHelper
                 }
 
         /* Compare Combinations from either tab to English Dictionary */
+
+            wordList = wordList.Distinct().ToList(); // Remove Duplicate Words in List
 
             this.lblStatus.Text = "Spell checking...";
             this.Refresh();
