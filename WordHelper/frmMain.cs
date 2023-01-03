@@ -814,6 +814,7 @@ namespace WordHelper
         {
             if (this.txtAddWord.Text == String.Empty) return; //If nothing is in the input textbox
 
+            lstGood.Items.Add(txtAddWord.Text);
 
         /* Exception handler logging to file defined in form load function */
 
@@ -830,10 +831,6 @@ namespace WordHelper
                 cmd.CommandType = CommandType.Text;
                 cmd.ExecuteNonQuery();
                 cn.Close();
-
-                RefreshWords();
-
-                MessageBox.Show(txtAddWord.Text + " added!");
 
                 txtAddWord.Text = "";
             }
@@ -873,7 +870,7 @@ namespace WordHelper
 
                 sql = "DELETE dbo.GoodWord WHERE word = '" + selected + "'";
 
-                MessageBox.Show(selected + " deleted");
+                MessageBox.Show(selected + " removed");
 
                 cmd = new SqlCommand(sql, cn);
                 cmd.CommandType = CommandType.Text;
@@ -919,7 +916,7 @@ namespace WordHelper
 
                 sql = "DELETE dbo.BadWord WHERE word = '" + selected + "'";
 
-                MessageBox.Show(selected + " deleted");
+                MessageBox.Show(selected + " added to dictionary");
 
                 cmd = new SqlCommand(sql, cn);
                 cmd.CommandType = CommandType.Text;
@@ -938,19 +935,17 @@ namespace WordHelper
         {
             if (this.lstBad.Text == String.Empty) return;
 
+            lstBad.Items.Remove(lstBad.Text);
+
             SqlConnection cn = new SqlConnection(DBInfo.cnString);
             cn.Open();
 
             string sql = "DELETE dbo.BadWord WHERE word = '" + lstBad.Text + "'";
 
-            MessageBox.Show(lstBad.Text + " deleted");
-
             SqlCommand cmd = new SqlCommand(sql, cn);
             cmd.CommandType = CommandType.Text;
             cmd.ExecuteNonQuery();
             cn.Close();
-
-            RefreshWords();
         }
     }
 }
