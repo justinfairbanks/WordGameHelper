@@ -1,5 +1,5 @@
 # WordGameHelper
-C# Event Driven Final Project
+C# Event Driven Final Project using Azure SQL Database
 
 Windows Forms App (.Net Framework) to output possible words satisfying given conditions in word games
 
@@ -13,7 +13,7 @@ Windows Forms App (.Net Framework) to output possible words satisfying given con
   - The WordHelper App outputs the possible five letter words that satisfy these known conditions. The input boxes can be updated for each guess, as the code keeps track of the previous input's conditions. This is the case until the 'New Wordle' button is pressed.
   
  
-- Third tab utilizes SQL Databases, in which words may be added or removed from the dictionary. (Database is not remote access enabled)
+- Third tab utilizes Azure SQL Databases, in which words may be added or removed from the dictionary.                                                                         (Updated from using Northwest Nazarene Univ. Database)
  
   - Words in the Database dictionary txtbox could appear in the potential words box if the word conditions are satisfied. 
   
