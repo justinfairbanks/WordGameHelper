@@ -926,12 +926,12 @@ namespace WordHelper
         {
             if (this.lstBad.Text == String.Empty) return;
 
-            lstBad.Items.Remove(lstBad.Text);
-
             SqlConnection cn = new SqlConnection(DBInfo.cnString);
             cn.Open();
 
             string sql = "DELETE dbo.BadWord WHERE word = '" + lstBad.Text + "'";
+
+            lstBad.Items.Remove(lstBad.Text);
 
             SqlCommand cmd = new SqlCommand(sql, cn);
             cmd.CommandType = CommandType.Text;
